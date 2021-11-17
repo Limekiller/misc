@@ -46,6 +46,7 @@ const updateTicketEmphasis = () => {
 
         // Also, if a customer has replied, that's, like, an important thing, so maybe let's emphasize that?
         } else if (status === 'Customer Replied') {
+            statusField.querySelector('div[aria-label="Status"]').innerHTML = 'Replied <span class="ember-power-select-status-icon"></span>';
             statusField.classList.add('alert');
         }
    });
