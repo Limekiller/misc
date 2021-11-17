@@ -4,16 +4,13 @@
 // Since it's a React app, we need to watch for page changes so we can re-run JS that formats the page. Cool!
 let currentPage = location.href;
 setInterval(() => {
-    if (currentPage != location.href) {
+    if (currentPage != location.href && !document.querySelector('html').classList.contains('nprogress-busy')) {
         currentPage = location.href;
-        // Hacky wait for data to actually load in once path changes. Won't work on slow internet.
-        window.setTimeout(() => {
-            hidePluginTickets();
-            swapCols();
-            updateTicketEmphasis();
-        }, 500);
+        hidePluginTickets();
+        swapCols();
+        updateTicketEmphasis();
     }
-}, 500);
+}, 100);
 
 // Find tickets with the request type column set to "plugin" and hide them from view
 const hidePluginTickets = () => {
