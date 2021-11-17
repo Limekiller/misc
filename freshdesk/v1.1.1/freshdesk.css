@@ -1,0 +1,24 @@
+.list td {
+    padding: 0px;
+}
+.lt-body tr {
+    line-height: 1px;
+}
+.fresh-table .list tbody td:first-child {
+    top: -7px;
+    position: relative;
+    padding: 15px;
+}
+.lt-body a {
+    line-height: 18px;
+}
+.alert::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -15px;
+    padding: 5px 5px;
+    border-radius: 50px;
+    background: red;
+    transform: translateY(-50%); 
+}
