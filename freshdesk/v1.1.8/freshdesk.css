@@ -12,7 +12,7 @@
 .lt-body a {
     line-height: 18px;
 }
-.alert::before {
+.reply-alert::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -21,4 +21,7 @@
     border-radius: 50px;
     background: red;
     transform: translateY(-50%); 
+}
+.__module-tickets__tickets-list__tickets-table .status-tag-wrap .tag {
+    padding: 10px;   
 }

@@ -6,7 +6,7 @@ let currentPage = location.href;
 setInterval(() => {
     if (currentPage != location.href && !document.querySelector('.gravity-loader')) {
         currentPage = location.href;
-        hidePluginTickets();
+        window.setTimeout(hidePluginTickets, 500);
         swapCols();
         updateTicketEmphasis();
     }
@@ -14,6 +14,12 @@ setInterval(() => {
 
 // Find tickets with the request type column set to "plugin" and hide them from view
 const hidePluginTickets = () => {
+    // Don't hide plugin tickets if the view contains "plugin" in the title
+    const viewTitle = document.querySelector('.breadcrumb-title').textContent.trim().toLowerCase();
+    if (viewTitle.includes('plugin')) {
+        return
+    }
+
     document.querySelectorAll('.lt-body tr').forEach(ticket => {
         ticket.querySelectorAll('td').forEach(column => {
             const val = column.textContent.trim()
@@ -47,7 +53,7 @@ const updateTicketEmphasis = () => {
         // Also, if a customer has replied, that's, like, an important thing, so maybe let's emphasize that?
         } else if (status === 'Customer Replied') {
             statusField.querySelector('div[aria-label="Status"]').innerHTML = 'Replied <span class="ember-power-select-status-icon"></span>';
-            statusField.classList.add('alert');
+            statusField.classList.add('reply-alert');
         }
    });
 }
