@@ -41,16 +41,15 @@ const swapCols = () => {
 const updateTicketEmphasis = () => {
     document.querySelectorAll('div[data-test-id="statusTranslatedLabel_test_label"]').forEach(statusField => {
         const status = statusField.textContent.trim();
-        
+
         // Zendesk had different colors for different ticket statuses, and put Pending tickets at the bottom of the list
         // Freshdesk, on the other hand, sucks balls, so here we're lowering the opacity of pending tickets so we can get some visual differentiation
         if (status === 'Pending') {
             statusField.closest('tr').style.opacity = '0.5';
-            
+
         // Also, if a customer has replied, that's, like, an important thing, so maybe let's emphasize that?
         } else if (status === 'Customer Replied') {
-            statusField.querySelector('span').innerHTML = 'Replied';
-            statusField.classList.add('alert');   
+            statusField.classList.add('alert');
         }
    });
 }
