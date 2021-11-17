@@ -4,7 +4,7 @@
 // Since it's a React app, we need to watch for page changes so we can re-run JS that formats the page. Cool!
 let currentPage = location.href;
 setInterval(() => {
-    if (currentPage != location.href && !document.querySelector('html').classList.contains('nprogress-busy')) {
+    if (currentPage != location.href && !document.querySelector('.gravity-loader')) {
         currentPage = location.href;
         hidePluginTickets();
         swapCols();
