@@ -5,10 +5,11 @@
 let currentPage = location.href;
 setInterval(() => {
     if (currentPage != location.href && !document.querySelector('.gravity-loader')) {
-        currentPage = location.href;
         window.setTimeout(hidePluginTickets, 500);
-        swapCols();
+
+        currentPage = location.href;
         updateTicketEmphasis();
+        swapCols();
     }
 }, 100);
 
@@ -48,7 +49,9 @@ const updateTicketEmphasis = () => {
         // Zendesk had different colors for different ticket statuses, and put Pending tickets at the bottom of the list
         // Freshdesk, on the other hand, sucks balls, so here we're lowering the opacity of pending tickets so we can get some visual differentiation
         if (status === 'Pending') {
-            statusField.closest('tr').style.opacity = '0.5';
+            const row = statusField.closest('tr');
+            row.parentNode.append(row);
+            row.style.opacity = '0.5';
 
         // Also, if a customer has replied, that's, like, an important thing, so maybe let's emphasize that?
         } else if (status === 'Customer Replied') {
