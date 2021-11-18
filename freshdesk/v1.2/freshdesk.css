@@ -1,0 +1,115 @@
+.list td {
+    padding: 0px;
+}
+.lt-body tr {
+    line-height: 1px;
+}
+.fresh-table .list tbody td:first-child {
+    top: -7px;
+    position: relative;
+    padding: 15px;
+}
+.lt-body a {
+    line-height: 18px;
+}
+.reply-alert::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -15px;
+    padding: 5px 5px;
+    border-radius: 50px;
+    background: red;
+    transform: translateY(-50%); 
+}
+.__module-tickets__tickets-list__tickets-table .status-tag-wrap .tag {
+    padding: 10px;   
+}
+#nucleus-navbar.fixed {
+    flex-direction: row;
+    width: 100%;
+    height: 60px;
+}
+#nucleus-navbar ul {
+    display: flex;
+}
+.__app-navbar .navbar-body {
+    flex-direction: row;
+    width: 100%;
+}
+.category-menu {
+    left: 0px;
+    top: 5px;
+    box-shadow: 4px 0 5px 0 rgba(74, 74, 74, 0.11);
+}
+.application-header {
+    padding: 64px 0px 0px 300px;
+    z-index: 901;
+    pointer-events: none;
+}
+.application-header * {
+    pointer-events: all;
+}
+.selectedtick {
+    display: none;
+}
+.category-menu--link--active::after {
+    content: '✓';
+    position: absolute;
+    right: 20px;
+    font-size: 25px;
+    margin-top: -8px;
+}
+.app-main-wrapper {
+    margin: 75px 0px 0px 225px;
+    position: relative;
+}
+.__module-tickets__ticket-details__properties .panes-shadow {
+    margin-top: 60px;
+}
+.header-primary__user__item {
+    position: absolute;
+    top: 0;
+    background: white;
+    height: 60px;
+    right: 0;
+    border-radius: 5px 0px 0px 5px;
+}
+#mainactionbar {
+    position: relative;
+    margin-top: -60px;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    pointer-events: none;
+}
+.__module-tickets__tickets-list__top-navigation * {
+    pointer-events: all;
+}
+.page-content {
+    margin-top: -73px;
+}
+.page-actions__left::after {
+    content: '';
+    height: 26px;
+    background: #00000029;
+    width: 1px;
+    position: relative;
+    display: block;
+    left: 12px;
+    margin-left: 12px;
+}
+.page-actions__left {
+    margin-right: 30px;
+    position: relative;
+}
+.page-actions__left, .page-actions__right {
+    display: flex;
+    align-items: center;
+}
+.__module-tickets__ticket-details .content-widget {
+    margin-top: -65px;
+}

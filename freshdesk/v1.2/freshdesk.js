@@ -3,15 +3,37 @@
 
 // Since it's a React app, we need to watch for page changes so we can re-run JS that formats the page. Cool!
 let currentPage = location.href;
+let firstLoad = true;
+let ticketsCleared = false;
 setInterval(() => {
-    if (currentPage != location.href && !document.querySelector('.gravity-loader')) {
-        window.setTimeout(hidePluginTickets, 500);
+    if (document.querySelector('*[data-identifyelement="10"]')) {
+        if (firstLoad) {
+            firstLoad = false;
+            simulateMouseClick(document.querySelector('.burger-menu-trigger'));
+            window.setTimeout(fixMenu, 100);
+        }
+        const navbar = document.querySelector('#nucleus-navbar');
+        navbar.classList.add('fixed');
+        // navbar.parentNode.appendChild(navbar.cloneNode(true));
+        // navbar.remove();
+    }
+    if (currentPage != location.href) {
+        if (!ticketsCleared) {
+            ticketsCleared = true;
+            document.querySelectorAll('.lt-body tr').forEach(row => { row.style.display = 'none' });
+        }
 
-        currentPage = location.href;
-        updateTicketEmphasis();
-        swapCols();
+        if (!document.querySelector('.gravity-loader')) {
+            window.setTimeout(hidePluginTickets, 500);
+
+            ticketsCleared = false;
+            currentPage = location.href;
+            updateTicketEmphasis();
+            swapCols();
+        }
     }
 }, 100);
+
 
 // Find tickets with the request type column set to "plugin" and hide them from view
 const hidePluginTickets = () => {
@@ -53,10 +75,36 @@ const updateTicketEmphasis = () => {
             row.parentNode.append(row);
             row.style.opacity = '0.5';
 
-        // Also, if a customer has replied, that's, like, an important thing, so maybe let's emphasize that?
+            // Also, if a customer has replied, that's, like, an important thing, so maybe let's emphasize that?
         } else if (status === 'Customer Replied') {
             statusField.querySelector('div[aria-label="Status"]').innerHTML = 'Replied <span class="ember-power-select-status-icon"></span>';
             statusField.classList.add('reply-alert');
         }
-   });
+    });
 }
+
+const fixMenu = () => {
+    const menu = document.querySelector('.category-menu');
+    menu.parentNode.parentNode.appendChild(menu.cloneNode(true));
+    menu.remove();
+
+    const newMenu = document.querySelector('.category-menu');
+    newMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            newMenu.querySelectorAll('a').forEach(_link => _link.classList.remove('category-menu--link--active'));
+            link.classList.add('category-menu--link--active');
+        });
+    });
+}
+
+const simulateMouseClick = (targetNode) => {
+    const triggerMouseEvent = (targetNode, eventType) => {
+        const clickEvent = document.createEvent('MouseEvents');
+        clickEvent.initEvent(eventType, true, true);
+        targetNode.dispatchEvent(clickEvent);
+    }
+    ["mouseover", "mousedown", "mouseup", "click"].forEach(eventType => {
+        triggerMouseEvent(targetNode, eventType);
+    });
+}
+
