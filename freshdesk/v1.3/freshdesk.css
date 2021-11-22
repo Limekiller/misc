@@ -43,7 +43,7 @@
     box-shadow: 4px 0 5px 0 rgba(74, 74, 74, 0.11);
 }
 .application-header {
-    padding: 64px 0px 0px 300px;
+    padding: 60px 0px 0px 289px;
     z-index: 901;
     pointer-events: none;
 }
@@ -64,16 +64,16 @@
     margin: 75px 0px 0px 225px;
     position: relative;
 }
-.__module-tickets__ticket-details__properties .panes-shadow {
-    margin-top: 60px;
-}
 .header-primary__user__item {
     position: absolute;
     top: 0;
     background: white;
     height: 60px;
+    right: 54px;
+    border-bottom: 1px solid #ececec;
+}
+.header-primary__user__item.dropdown {
     right: 0;
-    border-radius: 5px 0px 0px 5px;
 }
 #mainactionbar {
     position: relative;
@@ -91,6 +91,7 @@
 }
 .page-content {
     margin-top: -73px;
+    padding: 0px;
 }
 .page-actions__left::after {
     content: '';
@@ -111,5 +112,5 @@
     align-items: center;
 }
 .__module-tickets__ticket-details .content-widget {
-    margin-top: -65px;
+    margin-top: -71px;
 }

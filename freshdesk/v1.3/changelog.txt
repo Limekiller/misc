@@ -1,0 +1,3 @@
+- Multiple visual fixes and improvements
+- Tickets page no longer needs to be loaded directly for the menu to work
+- Automatic update notifier added

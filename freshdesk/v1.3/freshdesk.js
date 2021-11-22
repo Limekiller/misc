@@ -5,22 +5,30 @@
 let currentPage = location.href;
 let firstLoad = true;
 let ticketsCleared = false;
+
+const currVersion = '1.3';
+let updateExists = false;
+
 setInterval(() => {
     if (document.querySelector('*[data-identifyelement="10"]')) {
-        if (firstLoad) {
+        if (firstLoad && window.location.pathname.includes('tickets') && document.querySelector('.burger-menu-trigger')) {
             firstLoad = false;
             simulateMouseClick(document.querySelector('.burger-menu-trigger'));
             window.setTimeout(fixMenu, 100);
         }
         const navbar = document.querySelector('#nucleus-navbar');
-        navbar.classList.add('fixed');
-        // navbar.parentNode.appendChild(navbar.cloneNode(true));
-        // navbar.remove();
+        window.setTimeout(() => navbar.classList.add('fixed'), 500);
     }
+
     if (currentPage != location.href) {
         if (!ticketsCleared) {
             ticketsCleared = true;
             document.querySelectorAll('.lt-body tr').forEach(row => { row.style.display = 'none' });
+        }
+
+        if (!updateExists) {
+            updateExists = true;
+            checkForUpdates();
         }
 
         if (!document.querySelector('.gravity-loader')) {
@@ -64,18 +72,15 @@ const swapCols = () => {
 }
 
 
+// Fade out Pending tickets and move them to the bottom of the list,
+// Add a red dot next to Replied tickets
 const updateTicketEmphasis = () => {
     document.querySelectorAll('div[data-test-id="statusTranslatedLabel_test_label"]').forEach(statusField => {
         const status = statusField.textContent.trim();
-
-        // Zendesk had different colors for different ticket statuses, and put Pending tickets at the bottom of the list
-        // Freshdesk, on the other hand, sucks balls, so here we're lowering the opacity of pending tickets so we can get some visual differentiation
         if (status === 'Pending') {
             const row = statusField.closest('tr');
             row.parentNode.append(row);
             row.style.opacity = '0.5';
-
-            // Also, if a customer has replied, that's, like, an important thing, so maybe let's emphasize that?
         } else if (status === 'Customer Replied') {
             statusField.querySelector('div[aria-label="Status"]').innerHTML = 'Replied <span class="ember-power-select-status-icon"></span>';
             statusField.classList.add('reply-alert');
@@ -83,6 +88,7 @@ const updateTicketEmphasis = () => {
     });
 }
 
+// "Pin" the ticket nav bar so it doesn't disappear on body click
 const fixMenu = () => {
     const menu = document.querySelector('.category-menu');
     menu.parentNode.parentNode.appendChild(menu.cloneNode(true));
@@ -97,6 +103,7 @@ const fixMenu = () => {
     });
 }
 
+// Programmatically send a click event even when .click() doesn't work
 const simulateMouseClick = (targetNode) => {
     const triggerMouseEvent = (targetNode, eventType) => {
         const clickEvent = document.createEvent('MouseEvents');
@@ -108,3 +115,15 @@ const simulateMouseClick = (targetNode) => {
     });
 }
 
+const checkForUpdates = () => {
+    fetch(`https://raw.githubusercontent.com/Limekiller/misc/master/freshdesk/v${currVersion}/freshdesk.js`)
+    .then(response => {
+        if (response.status === 404) {
+            const newVersion = Number(Math.round(Number(currVersion) + .1 + 'e2')+'e-2');
+            fetch(`https://raw.githubusercontent.com/Limekiller/misc/master/freshdesk/v${newVersion}/changelog.txt`)
+            .then(response => response.text())
+            .then(data => alert(`There is a new version of the Freshdesk scripts available! Please replace your current JS and CSS link with:\n\nhttps://cdn.jsdelivr.net/gh/limekiller/misc/freshdesk/v${newVersion}/freshdesk.js\nhttps://cdn.jsdelivr.net/gh/limekiller/misc/freshdesk/v${newVersion}/freshdesk.css\n\nChangelog:\n${data}`));
+
+        }
+    })
+}
