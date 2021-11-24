@@ -1,0 +1,4 @@
+- Links in the top navigation bar no longer disappear
+- Side menu no longer fails to appear if a ticket page is the first load
+- Tickets are now displayed correctly when the list is reloaded but the page doesn't change
+- Line height is fixed for multi-line fields

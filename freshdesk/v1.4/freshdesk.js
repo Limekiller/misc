@@ -1,26 +1,28 @@
 // This custom JS code runs clientside and goes in a plugin such as https://mybrowseraddon.com/custom-style-script.html
 // It makes Freshdesk usable
 
-// Since it's a React app, we need to watch for page changes so we can re-run JS that formats the page. Cool!
-let currentPage = location.href;
 let firstLoad = true;
+let isLoading = false;
 let ticketsCleared = false;
 
-const currVersion = '1.3';
+const currVersion = '1.4';
 let updateExists = false;
 
 setInterval(() => {
-    if (document.querySelector('*[data-identifyelement="10"]')) {
+    // Once the page actually, fully loads, set the side menu in place (if we can on this page) and fix the top nav bar
+    if (document.body.dataset.identifyelement !== undefined) {
         if (firstLoad && window.location.pathname.includes('tickets') && document.querySelector('.burger-menu-trigger')) {
             firstLoad = false;
-            simulateMouseClick(document.querySelector('.burger-menu-trigger'));
             window.setTimeout(fixMenu, 100);
         }
         const navbar = document.querySelector('#nucleus-navbar');
         window.setTimeout(() => navbar.classList.add('fixed'), 500);
     }
 
-    if (currentPage != location.href) {
+    // Here we watch for page changes. If the page is changing, clear all tickets manually
+    if (document.querySelector('.gravity-loader') || isLoading) {
+        isLoading = true;
+
         if (!ticketsCleared) {
             ticketsCleared = true;
             document.querySelectorAll('.lt-body tr').forEach(row => { row.style.display = 'none' });
@@ -31,11 +33,11 @@ setInterval(() => {
             checkForUpdates();
         }
 
+        // Once we're no longer loading the page, fix all the tickets in the list
         if (!document.querySelector('.gravity-loader')) {
             window.setTimeout(hidePluginTickets, 500);
-
+            isLoading = false;
             ticketsCleared = false;
-            currentPage = location.href;
             updateTicketEmphasis();
             swapCols();
         }
@@ -90,17 +92,21 @@ const updateTicketEmphasis = () => {
 
 // "Pin" the ticket nav bar so it doesn't disappear on body click
 const fixMenu = () => {
-    const menu = document.querySelector('.category-menu');
-    menu.parentNode.parentNode.appendChild(menu.cloneNode(true));
-    menu.remove();
+    simulateMouseClick(document.querySelector('.burger-menu-trigger'));
 
-    const newMenu = document.querySelector('.category-menu');
-    newMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            newMenu.querySelectorAll('a').forEach(_link => _link.classList.remove('category-menu--link--active'));
-            link.classList.add('category-menu--link--active');
+    window.setTimeout(() => {
+        const menu = document.querySelector('.category-menu');
+        menu.parentNode.parentNode.appendChild(menu.cloneNode(true));
+        menu.remove();
+
+        const newMenu = document.querySelector('.category-menu');
+        newMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                newMenu.querySelectorAll('a').forEach(_link => _link.classList.remove('category-menu--link--active'));
+                link.classList.add('category-menu--link--active');
+            });
         });
-    });
+    }, 500);
 }
 
 // Programmatically send a click event even when .click() doesn't work
@@ -115,10 +121,12 @@ const simulateMouseClick = (targetNode) => {
     });
 }
 
+// Send a request to the raw github link for this script. If it doesn't exist, it's been replaced with a new version
 const checkForUpdates = () => {
     fetch(`https://raw.githubusercontent.com/Limekiller/misc/master/freshdesk/v${currVersion}/freshdesk.js`)
     .then(response => {
         if (response.status === 404) {
+            // Retrieve the changelog from that new version folder and display an alert
             const newVersion = Number(Math.round(Number(currVersion) + .1 + 'e2')+'e-2');
             fetch(`https://raw.githubusercontent.com/Limekiller/misc/master/freshdesk/v${newVersion}/changelog.txt`)
             .then(response => response.text())
