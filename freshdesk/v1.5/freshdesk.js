@@ -5,7 +5,7 @@ let firstLoad = true;
 let isLoading = false;
 let ticketsCleared = false;
 
-const currVersion = '1.4';
+const currVersion = '1.5';
 let updateExists = false;
 
 setInterval(() => {
@@ -61,6 +61,8 @@ const hidePluginTickets = () => {
             }
         })
     });
+
+    updateTicketCount();
 }
 
 // Swap the "Contact" and "Subject" columns
@@ -90,6 +92,18 @@ const updateTicketEmphasis = () => {
     });
 }
 
+
+// Update the ticket numbers in the top right to be accurate
+const updateTicketCount = () => {
+    let visibleTickets = [];
+    document.querySelectorAll('.lt-body tr').forEach(ticket => {
+        if (ticket.style.display !== 'none') {
+            visibleTickets.push(ticket);
+        }
+    });
+    document.querySelector('span[data-test-id="pagination-details"]').innerHTML = `${visibleTickets.length} tickets`;
+}
+
 // "Pin" the ticket nav bar so it doesn't disappear on body click
 const fixMenu = () => {
     simulateMouseClick(document.querySelector('.burger-menu-trigger'));
@@ -106,6 +120,9 @@ const fixMenu = () => {
                 link.classList.add('category-menu--link--active');
             });
         });
+
+        document.querySelector('.app-main-wrapper').classList.add('menu-visible');
+        document.querySelector('.application-header').classList.add('menu-visible');
     }, 500);
 }
 

@@ -4,6 +4,9 @@
 .lt-body tr {
     line-height: 1px;
 }
+.card-view .lt-body tr {
+    line-height: 15px;
+}
 .fresh-table .list tbody td:first-child {
     top: -7px;
     position: relative;
@@ -21,6 +24,11 @@
     border-radius: 50px;
     background: red;
     transform: translateY(-50%); 
+}
+.card-view .status-tag-wrap .tag {
+    position: absolute;
+    right: 0;
+    top: 20px;
 }
 .__module-tickets__tickets-list__tickets-table .status-tag-wrap .tag {
     padding: 10px;   
@@ -49,9 +57,12 @@
     box-shadow: 4px 0 5px 0 rgba(74, 74, 74, 0.11);
 }
 .application-header {
-    padding: 60px 0px 0px 289px;
+    padding: 60px 0px 0px 0px;
     z-index: 901;
     pointer-events: none;
+}
+.application-header.menu-visible {
+    padding: 60px 0px 0px 289px;
 }
 .application-header * {
     pointer-events: all;
@@ -66,9 +77,12 @@
     font-size: 25px;
     margin-top: -8px;
 }
-.app-main-wrapper {
+.app-main-wrapper.menu-visible {
     margin: 75px 0px 0px 225px;
     position: relative;
+}
+.app-main-wrapper {
+    margin: 75px 0px 0px -65px;
 }
 .header-primary__user__item {
     position: absolute;
@@ -118,11 +132,24 @@
     align-items: center;
 }
 .__module-tickets__ticket-details .content-widget {
+    left: 0px;
     margin-top: -71px;
+}
+.menu-visible .__module-tickets__ticket-details .content-widget {
+    left: 64px;
 }
 .fresh-table .list tbody td span:not(.tag) {
     line-height: 21px;
 }
 .__app-navbar .navbar-header {
     max-height: 60px;
+}
+.__module-tickets__tickets-list__tickets-table__group-agent-column-renderer > div:first-child {
+    display: none; 
+}
+div[data-test-id="group-agent"] > div > div:first-child {
+   display: none; 
+}
+th[style="width: 400px"], tr[style="width: 400px"], td[style="width: 400px"]  {
+    width: 180px !important;
 }

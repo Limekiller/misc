@@ -1,0 +1,4 @@
+- If a ticket is the first load (and therefore the menu can't appear yet), the view will fill the empty space until the menu is visible
+- Visual fixes for card view
+- Group "column" is now hidden
+- Top right ticket count now shows correct count
