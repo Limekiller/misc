@@ -78,7 +78,7 @@
     margin-top: -8px;
 }
 .app-main-wrapper.menu-visible {
-    margin: 75px 0px 0px 225px;
+    margin: 75px 0px 0px 289px;
     position: relative;
 }
 .app-main-wrapper {
@@ -110,6 +110,7 @@
     pointer-events: all;
 }
 .page-content {
+    left: 0px;
     margin-top: -73px;
     padding: 0px;
 }
@@ -152,4 +153,7 @@ div[data-test-id="group-agent"] > div > div:first-child {
 }
 th[style="width: 400px"], tr[style="width: 400px"], td[style="width: 400px"]  {
     width: 180px !important;
+}
+.__module-search__app-search .page-search__results {
+    left: 0px;
 }

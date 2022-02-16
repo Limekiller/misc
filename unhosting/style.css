@@ -44,10 +44,10 @@ ul:not(.nav):not(.navbar-nav) {
     font-size: 18px;
 }
 
-:not(div[id^="accordion"]) ul:not(.nav):not(.navbar-nav):not(ul ul) {
+:not(div[id^="accordion"]) ul:not(.nav):not(.navbar-nav):not(ul ul):not(.pagination) {
     display: grid;
     flex-wrap: wrap;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /*grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));*/
     grid-template-rows: auto;
     grid-column-gap: 10px;
     grid-row-gap: 20px;
@@ -76,4 +76,39 @@ div[id^="accordion"] {
     padding: 10px;
     border-radius: 50px;
     background: #f9f9f9;
+}
+
+tr {
+  display: grid;
+  padding: 5px;
+  background: #f2f2f2;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  grid-template-columns: auto auto auto auto 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+}
+
+th, td:first-of-type {
+  grid-column: 1 / 7;
+  font-size: 20px;
+  padding-bottom: 0px;
+}
+
+thead {
+    display: none;
+}
+
+.table td, .table th {
+    border: none;
+}
+
+td:last-of-type {
+    font-size: 25px;
+    justify-self: end;
+    grid-column: -1;
+}
+
+.btn {
+    margin-bottom: 10px;
 }
