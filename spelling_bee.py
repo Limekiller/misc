@@ -1,5 +1,6 @@
 # New York Times "Spelling Bee" puzzle solver
 import sys
+import os
 
 
 def search_wordlist(prefix, wordlist):
@@ -40,6 +41,12 @@ def generate_words(letters, word='', words=set(), wordlist=None):
     """
 
     if not wordlist:
+        if not os.path.exists('words.txt'):
+            print(
+                "No wordlist found! Please place a file 'words.txt' in this directory containing a valid list of words to pull from, with one word on each line.\n" +
+                "e.g. list of valid Scrabble words found here: https://boardgames.stackexchange.com/questions/38366/latest-collins-scrabble-words-list-in-text-file"
+            )
+            exit()
         with open('words.txt') as f:
             wordlist = f.read().splitlines()
 
@@ -102,6 +109,7 @@ if __name__ == '__main__':
 
     all_words = generate_words(letters)
     matching_words = check_words(all_words, main_letter)
+    matching_words = sorted(matching_words, key=len)
 
     for word in matching_words:
         print(word)
