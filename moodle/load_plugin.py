@@ -16,7 +16,8 @@ class PluginDB:
             for moodle in version['supportedmoodles']:
                 if moodle['release'] == moodle_version:
                     return version['downloadurl']
-        return False
+
+        return self.db[plugin]['versions'][-1]['downloadurl']
 
     def get_plugin_db(self):
         res = requests.get("https://download.moodle.org/api/1.3/pluglist.php")
@@ -41,13 +42,13 @@ class Plugin:
         if self.plugintype not in PLUGIN_DIRS.keys():
             raise Exception("Plugin type " + self.plugintype + " not recognized")
         if os.path.exists(SITE_DIR + '/' + PLUGIN_DIRS[self.plugintype] + '/' + self.pluginname):
-            raise Exception("Plugin already in codebase!")
+            raise Exception(self.plugin + " already in codebase!")
 
     def download(self):
         plugin_url = PLUGINDB.find_most_recent_url_for_version(self.plugin, VERSION)
 
         if not plugin_url:
-            raise Exception("No download found for plugin")
+            raise Exception("No download found for " + self.plugin)
 
         download_path = SITE_DIR + '/' + PLUGIN_DIRS[self.plugintype] + '/plugin.zip'
 
@@ -56,7 +57,7 @@ class Plugin:
             shutil.copyfileobj(res.raw, out_file)
 
         os.chdir(download_path.split('/plugin.zip')[0])
-        os.system('unzip plugin.zip > /dev/null 2>&1')
+        os.system('unzip plugin.zip -d ' + self.pluginname + ' > /dev/null 2>&1')
         os.remove(download_path)
 
 
@@ -123,7 +124,7 @@ PLUGIN_DIRS = {
 SITE_DIR = None
 PLUGIN = None
 VERSION = None
-PLUGINDB = PluginDB()
+PLUGINDB = None
 
 
 if __name__ == "__main__":
@@ -143,6 +144,8 @@ if __name__ == "__main__":
     if not os.path.exists(SITE_DIR + '/version.php'):
         raise Exception("Doesn't appear to be a Moodle directory")
 
+    PLUGINDB = PluginDB()
+
     # If we were passed a file path, iterate its lines
     if os.path.exists(PLUGIN):
         with open(PLUGIN) as plugin_file:
@@ -150,6 +153,7 @@ if __name__ == "__main__":
                 try:
                     plugin_obj = Plugin(_plugin.strip())
                     plugin_obj.download()
+                    print(_plugin.strip() + " added to codebase")
                 except Exception as e:
                     print(e)
     else:
