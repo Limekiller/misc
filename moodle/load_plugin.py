@@ -11,6 +11,9 @@ class PluginDB:
         self.db = self.get_plugin_db()
 
     def find_most_recent_url_for_version(self, plugin, moodle_version):
+        if not plugin in self.db:
+            raise Exception(plugin + " not found in Moodle plugins directory!")
+
         # Iterate through versions going from most to least recent, and return the first one where the moodle version matches
         for version in reversed(self.db[plugin]['versions']):
             for moodle in version['supportedmoodles']:
@@ -57,7 +60,7 @@ class Plugin:
             shutil.copyfileobj(res.raw, out_file)
 
         os.chdir(download_path.split('/plugin.zip')[0])
-        os.system('unzip plugin.zip -d ' + self.pluginname + ' > /dev/null 2>&1')
+        os.system('unzip plugin.zip > /dev/null 2>&1')
         os.remove(download_path)
 
 
