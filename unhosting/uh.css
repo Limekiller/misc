@@ -1,19 +1,53 @@
-/* Type your CSS code here. */
+html {
+    font-size: 17px;
+}
 
 *, .dropdown-item {
     color: black;
 }
 
+.reportToggle {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: #eee;
+    border: none;
+    border-radius: 0.5rem;
+}
+.reportLinks {
+    display: none;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #eee;
+}
+.reportLinks.active {
+    display: block;
+}
+.dropdown-menu .reportLinks .dropdown-item{
+    padding: 0.5rem 0;
+    background: none;
+    border-radius: unset;
+}
+.dropdown-menu .reportLinks .dropdown-item:not(:last-child) {
+    border-bottom: 1px solid #c6c6c6;
+}
+
+.navbar-spark {
+    box-shadow: none;
+}
 body {
     background-color: white;
     min-height: 100vh;
 }
-.card-header {
-    /* display: none; */
+.card-header:not(.collapse-toggle) {
+    display: none;
 }
 .card {
     background: white;
     box-shadow: none;
+}
+.nav {
+    position: sticky;
+    top: 1rem;
 }
 .nav li {
     margin: 0.25rem 0;
@@ -26,13 +60,18 @@ ul.nav {
     border-radius: 0.5rem;
 }
 .dropdown-menu {
-    display: block;
     position: fixed !important;
     top: -3px;
-    height: 100%;
+    height: min-content;
     border: 0;
     padding: 1rem;
-    margin-right: -14rem;
+    margin-right: 15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.dropdown-header {
+    display: none;
 }
 .dropdown-toggle::after {
     display: none;
@@ -41,13 +80,12 @@ ul.nav {
     padding: 1rem;
     background: #eee;
     border-radius: 1rem;
-    margin: 0.5rem 0;
 }
 .dropdown-divider {
     display: none;
 }
 .navbar .container {
-  transform: translateX(-7rem);
+  margin-right: 28rem;
 }
 
 li span {
@@ -64,7 +102,10 @@ ul {
 }
 
 .py-4 .container {
-  transform: translateX(-8rem);
+  margin-right: 30rem;
+}
+.offset-md-4 {
+    margin: 0;
 }
 
 .form-control, .StripeElement {
@@ -75,6 +116,74 @@ ul {
     color: #00000073;
 
 }
+
+.form-control, .StripeElement,
+.form-control:focus, .StripeElement:focus {
+    color: black;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.col-md-4 {
+    max-width: unset;
+    flex: unset;
+}
+input {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+input[type="checkbox"] {
+	-webkit-appearance: none;
+	-webkit-tap-highlight-color: transparent;
+	position: relative;
+	border: 0;
+	outline: 0;
+	cursor: pointer;
+	margin: 10px;
+}
+input[type="checkbox"]:after {
+	content: '';
+	width: 60px;
+	height: 28px;
+	display: inline-block;
+	background: rgba(151, 151, 151, 0.55);
+	border-radius: 18px;
+	clear: both;
+}
+input[type="checkbox"]:before {
+	content: '';
+	width: 32px;
+	height: 32px;
+	display: block;
+	position: absolute;
+	left: 0;
+	top: -3px;
+	border-radius: 50%;
+	background: black;
+}
+input[type="checkbox"]:checked:before {
+	left: 32px;
+}
+input[type="checkbox"]:checked:after {
+	background: #42a2dc;
+}
+input[type="checkbox"],
+input[type="checkbox"]:before,
+input[type="checkbox"]:after,
+input[type="checkbox"]:checked:before,
+input[type="checkbox"]:checked:after {
+	transition: ease .3s;
+	-webkit-transition: ease .3s;
+	-moz-transition: ease .3s;
+	-o-transition: ease .3s;
+}
+
 
 /* SITES / STACKS */
 .sites tr, .stacks tr {
@@ -135,7 +244,7 @@ a[title="Info / Details"] {
 .stack-selector {
     position: absolute;
     right: 0;
-    top: -55px;
+    top: -66px;
 }
 tr.tablesorter-filter-row {
     position: relative;
@@ -146,6 +255,21 @@ tr.tablesorter-filter-row {
 }
 .rdssize:before {
     content: 'DB size:'
+}
+.siteSearch {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  background: grey;
+  pointer-events: none;
+}
+.siteSearch.active {
+    background: none;
+    pointer-events: all;
+}
+.pagination {
+    display: none;
 }
 
 /* SITE PAGE */
@@ -176,6 +300,20 @@ main .collapse, main .collapsing {
     border-radius: 99rem;
 }
 
+.plugins {
+    list-style: none;
+    padding: 1rem;
+    background: #eee;
+    border-radius: 0.5rem;
+}
+.plugins ul {
+    font-size: 0.75rem;
+    margin-top: 1rem;
+}
+.plugins strong {
+    font-size: 1rem;
+}
+
 /* USERS */
 #kiosk-users-search {
     padding: 1.25rem 1rem;
@@ -188,7 +326,7 @@ main .collapse, main .collapsing {
 
 .userResults {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1rem;
 }
 .user {
@@ -207,6 +345,8 @@ main .collapse, main .collapsing {
     background: #42a2dc;
     color: black;
     border-radius: 0.25rem;
+    margin-top: 1rem;
+    text-align: center;
 }
 
 .spark-settings-tabs {
@@ -224,5 +364,11 @@ main .collapse, main .collapsing {
     }
     img {
         filter: invert(1) hue-rotate(180deg);
+    }
+}
+
+@media screen and (max-width: 1600px) {
+    .dropdown-menu {
+        margin-right: 0;
     }
 }
