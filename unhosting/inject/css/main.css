@@ -1,0 +1,27 @@
+.section {
+    position: relative;
+    padding: 0.5rem;
+    background: #eee;
+    border-radius: 0.5rem;
+    margin-top: 3rem;
+}
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: -0.5rem;
+}
+.sectionAction .btn {
+    font-size: 0.75rem;
+}
+.sectionHead {
+    position: absolute;
+    margin-top: -2.25rem;
+    margin-left: -0.5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.sectionTitle {
+    font-weight: bold;
+    font-size: 1rem;
+}
