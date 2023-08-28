@@ -1,9 +1,10 @@
 .section {
     position: relative;
-    padding: 0.5rem;
+    padding: 1rem;
     background: #eee;
     border-radius: 0.5rem;
     margin-top: 3rem;
+    height: fit-content;
 }
 .actions {
     display: flex;
@@ -15,7 +16,7 @@
 }
 .sectionHead {
     position: absolute;
-    margin-top: -2.25rem;
+    margin-top: -2.75rem;
     margin-left: -0.5rem;
     display: flex;
     justify-content: space-between;
@@ -24,4 +25,22 @@
 .sectionTitle {
     font-weight: bold;
     font-size: 1rem;
+}
+.infoCards {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+.infoCards > span {
+    padding: 1rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid #eee;
+    background: white;            
 }
