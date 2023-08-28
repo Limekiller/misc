@@ -157,7 +157,7 @@ if (window.location.pathname === '/home' ||
     fetchSites()
 }
 
-if (window.location.pathname.includes('cloud_stacks')) {
+if (window.location.pathname == '/cp/cloud_stacks/') {
     document.querySelector('table').classList.add('stacks')
     document.querySelectorAll('.stacks tbody tr').forEach(row => {
         row.children[2].classList.add('status')
