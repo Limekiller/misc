@@ -4,9 +4,9 @@ var siteTitle = infoParent.childNodes[0].textContent.split('Review: ')[1].trim()
 var editBtn = infoParent.childNodes[2].querySelector('a');
 var pluginsBtn = infoParent.childNodes[2].querySelector('a');
 
-var siteStatus = infoParent.textContent.split('deployment status: ')[1].split(' ')[0].trim();
-var siteVersion = infoParent.textContent.split('checkout:: ')[1].split(' ')[0];
-var emailStatus = infoParent.textContent.split('Email state: ')[1].split(' ')[0];
+var siteStatus = infoParent.textContent.split('deployment status: ')[1].split("\n")[0].trim();
+var siteVersion = infoParent.textContent.split('checkout:: ')[1].split(" ")[0].trim();
+var emailStatus = infoParent.textContent.split('Email state: ')[1].split("Site admin")[0].trim();
 
 var domainStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionDomainRecord"]');
 var accordionDomainRecord = infoParent.querySelector('#accordionDomainRecord');
@@ -18,7 +18,7 @@ var accordionElbImport = infoParent.querySelector('#accordionElbImport');
 var mainInfo = document.querySelector('.col-sm-9 > ul');
 var url = mainInfo.textContent.split('URL: ')[1].split(' ')[0];
 
-var adminBtn = infoParent.childNodes[4];
+var adminBtn = infoParent.querySelector('.sites-custom-create-admin');
 var passwordSection = infoParent.childNodes[5];
 var adminUsername = mainInfo.innerHTML.split('admin username:</span> ')[1].split('<')[0];
 var adminPass = mainInfo.innerHTML.split('data-password="')[1].split('"')[0];
@@ -53,6 +53,7 @@ ReactDOM.render(React.createElement(
             url
         )
     ),
+    React.createElement('br', null),
     React.createElement(
         'div',
         { 'class': 'infoCards' },
@@ -126,7 +127,7 @@ ReactDOM.render(React.createElement(
                 React.createElement('div', { 'class': 'sectionAction adminBtnContainer' })
             )
         ),
-        adminBtn ? React.createElement(
+        React.createElement(
             'div',
             { className: 'adminInfo' },
             React.createElement(
@@ -175,7 +176,7 @@ ReactDOM.render(React.createElement(
                 ),
                 adminEmail
             )
-        ) : "",
+        ),
         React.createElement('div', { 'class': 'tempAdminSection', dangerouslySetInnerHTML: { __html: passwordSection.outerHTML } })
     ),
     React.createElement(
@@ -218,7 +219,7 @@ ReactDOM.render(React.createElement(
         'Advanced'
     ),
     React.createElement('div', { dangerouslySetInnerHTML: { __html: advSettings.outerHTML } }),
-    React.createElement('div', { dangerouslySetInnerHTML: { __html: jobOutput.outerHTML } }),
+    jobOutput ? React.createElement('div', { dangerouslySetInnerHTML: { __html: jobOutput.outerHTML } }) : "",
     React.createElement(
         'style',
         { jsx: true },
@@ -227,4 +228,6 @@ ReactDOM.render(React.createElement(
 ), document.querySelector('.reactRoot'));
 
 var adminBtnContainer = document.querySelector('.adminBtnContainer');
-adminBtnContainer.appendChild(adminBtn);
+if (adminBtn) {
+    adminBtnContainer.appendChild(adminBtn);
+}

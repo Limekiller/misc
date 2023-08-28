@@ -4,9 +4,9 @@ const siteTitle = infoParent.childNodes[0].textContent.split('Review: ')[1].trim
 const editBtn = infoParent.childNodes[2].querySelector('a')
 const pluginsBtn = infoParent.childNodes[2].querySelector('a')
 
-const siteStatus = infoParent.textContent.split('deployment status: ')[1].split(' ')[0].trim()
-const siteVersion = infoParent.textContent.split('checkout:: ')[1].split(' ')[0]
-const emailStatus = infoParent.textContent.split('Email state: ')[1].split(' ')[0]
+const siteStatus = infoParent.textContent.split('deployment status: ')[1].split("\n")[0].trim()
+const siteVersion = infoParent.textContent.split('checkout:: ')[1].split(" ")[0].trim()
+const emailStatus = infoParent.textContent.split('Email state: ')[1].split("Site admin")[0].trim()
 
 const domainStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionDomainRecord"]')
 const accordionDomainRecord = infoParent.querySelector('#accordionDomainRecord')
@@ -18,7 +18,7 @@ const accordionElbImport = infoParent.querySelector('#accordionElbImport')
 const mainInfo = document.querySelector('.col-sm-9 > ul') 
 const url = mainInfo.textContent.split('URL: ')[1].split(' ')[0]
 
-const adminBtn = infoParent.childNodes[4]
+const adminBtn = infoParent.querySelector('.sites-custom-create-admin')
 const passwordSection = infoParent.childNodes[5]
 const adminUsername = mainInfo.innerHTML.split('admin username:</span> ')[1].split('<')[0]
 const adminPass = mainInfo.innerHTML.split('data-password="')[1].split('"')[0]
@@ -39,7 +39,7 @@ ReactDOM.render(
                 <div dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
             : ""}
         </div>
-        <h3><a target="_blank" href={`${url}/login/index.php?nosso=true&username=mus&saml=no`}>{url}</a></h3>
+        <h3><a target="_blank" href={`${url}/login/index.php?nosso=true&username=mus&saml=no`}>{url}</a></h3><br />
         <div class="infoCards">
             <span class="status">
                 {siteStatus === 'complete' ?
@@ -77,28 +77,26 @@ ReactDOM.render(
                     <div class='sectionAction adminBtnContainer'/>
                 </div>
             </div>
-            {adminBtn ?
-                <div className='adminInfo'>
-                    <div class='section'>
-                        <div class='sectionHead'>
-                            <span class="sectionTitle">Username</span>
-                        </div>
-                        {adminUsername}
+            <div className='adminInfo'>
+                <div class='section'>
+                    <div class='sectionHead'>
+                        <span class="sectionTitle">Username</span>
                     </div>
-                    <div class='section'>
-                        <div class='sectionHead'>
-                            <span class="sectionTitle">Password</span>
-                        </div>
-                        <span class="password">{adminPass}</span>
-                    </div>
-                    <div class='section'>
-                        <div class='sectionHead'>
-                            <span class="sectionTitle">Email</span>
-                        </div>
-                        {adminEmail}
-                    </div>
+                    {adminUsername}
                 </div>
-            : "" }
+                <div class='section'>
+                    <div class='sectionHead'>
+                        <span class="sectionTitle">Password</span>
+                    </div>
+                    <span class="password">{adminPass}</span>
+                </div>
+                <div class='section'>
+                    <div class='sectionHead'>
+                        <span class="sectionTitle">Email</span>
+                    </div>
+                    {adminEmail}
+                </div>
+            </div>
             <div class="tempAdminSection" dangerouslySetInnerHTML={{__html: passwordSection.outerHTML}} />
         </div>
         <div className="section">
@@ -123,7 +121,7 @@ ReactDOM.render(
         <br />
         <h3>Advanced</h3>
         <div dangerouslySetInnerHTML={{__html: advSettings.outerHTML}} />
-        <div dangerouslySetInnerHTML={{__html: jobOutput.outerHTML}} />
+        {jobOutput ? <div dangerouslySetInnerHTML={{__html: jobOutput.outerHTML}} /> : "" }
         <style jsx>{`
             .titleBar {
                 display: flex;
@@ -225,4 +223,6 @@ ReactDOM.render(
 );
 
 const adminBtnContainer = document.querySelector('.adminBtnContainer')
-adminBtnContainer.appendChild(adminBtn)
+if (adminBtn) {
+    adminBtnContainer.appendChild(adminBtn)
+}
