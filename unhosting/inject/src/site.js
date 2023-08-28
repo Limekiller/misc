@@ -107,17 +107,20 @@ ReactDOM.render(
             </div>
             <ul dangerouslySetInnerHTML={{__html: mainInfo.innerHTML}} />
         </div>
-        <div className="section plugins">
-            <div class='sectionHead'>
-                <span class="sectionTitle">Plugins</span>
-                <div class='actions'>
-                    {editBtn ?
-                        <div class="sectionAction" dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
-                    : ""}                
+        {plugins ?
+            <div className="section plugins">
+                <div class='sectionHead'>
+                    <span class="sectionTitle">Plugins</span>
+                    <div class='actions'>
+                        {editBtn ?
+                            <div class="sectionAction" dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
+                        : ""}                
+                    </div>
                 </div>
+                <ul dangerouslySetInnerHTML={{__html: plugins.innerHTML}} />
             </div>
-            <ul dangerouslySetInnerHTML={{__html: plugins.innerHTML}} />
-        </div><br />
+        : "" }
+        <br />
         <h3>Advanced</h3>
         <div dangerouslySetInnerHTML={{__html: advSettings.outerHTML}} />
         <div dangerouslySetInnerHTML={{__html: jobOutput.outerHTML}} />

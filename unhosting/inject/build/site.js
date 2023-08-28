@@ -192,7 +192,7 @@ ReactDOM.render(React.createElement(
         ),
         React.createElement('ul', { dangerouslySetInnerHTML: { __html: mainInfo.innerHTML } })
     ),
-    React.createElement(
+    plugins ? React.createElement(
         'div',
         { className: 'section plugins' },
         React.createElement(
@@ -210,7 +210,7 @@ ReactDOM.render(React.createElement(
             )
         ),
         React.createElement('ul', { dangerouslySetInnerHTML: { __html: plugins.innerHTML } })
-    ),
+    ) : "",
     React.createElement('br', null),
     React.createElement(
         'h3',
