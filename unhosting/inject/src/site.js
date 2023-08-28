@@ -3,26 +3,31 @@ const infoParent = document.querySelector('.col-sm-9')
 const siteTitle = infoParent.childNodes[0].textContent.split('Review: ')[1].trim();
 const editBtn = infoParent.childNodes[2].querySelector('a')
 const pluginsBtn = infoParent.childNodes[2].querySelector('a')
-const stackStatus = infoParent.childNodes[9].querySelector('strong').textContent
 
 const siteStatus = infoParent.textContent.split('deployment status: ')[1].split(' ')[0].trim()
 const siteVersion = infoParent.textContent.split('checkout:: ')[1].split(' ')[0]
+const emailStatus = infoParent.textContent.split('Email state: ')[1].split(' ')[0]
+
+const domainStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionDomainRecord"]')
+const accordionDomainRecord = infoParent.querySelector('#accordionDomainRecord')
+const sslSatusDropdown = infoParent.querySelector('.collapsed[href="#accordionSslValidation"]')
+const accordionSslValidation = infoParent.querySelector('#accordionSslValidation')
+const ELBImportStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionElbImport"]')
+const accordionElbImport = infoParent.querySelector('#accordionElbImport')
+
+const mainInfo = document.querySelector('.col-sm-9 > ul') 
+const url = mainInfo.textContent.split('URL: ')[1].split(' ')[0]
 
 const adminBtn = infoParent.childNodes[4]
 const passwordSection = infoParent.childNodes[5]
-const adminUsername = infoParent.childNodes[19].innerHTML.split('admin username:</span> ')[1].split('<')[0]
-const adminPass = infoParent.childNodes[19].innerHTML.split('data-password="')[1].split('"')[0]
-const adminEmail = infoParent.childNodes[19].innerHTML.split('admin email:</span> ')[1].split('<')[0]
+const adminUsername = mainInfo.innerHTML.split('admin username:</span> ')[1].split('<')[0]
+const adminPass = mainInfo.innerHTML.split('data-password="')[1].split('"')[0]
+const adminEmail = mainInfo.innerHTML.split('admin email:</span> ')[1].split('<')[0]
 
-const domainStatus = infoParent.childNodes[11]
-const SSLStatus = infoParent.childNodes[13]
-const ELBStatus = infoParent.childNodes[15]
+const plugins = infoParent.querySelector('.plugins ul')
 
-const mainInfo = infoParent.childNodes[19]
-const plugins = infoParent.childNodes[20].querySelector('ul')
-
-const advSettings = infoParent.childNodes[22]
-const jobOutput = infoParent.childNodes[28]
+const advSettings = infoParent.querySelector('#accordionAdvancedSettings')
+const jobOutput = infoParent.querySelector('#accordionJobOutput')
 
 infoParent.insertAdjacentHTML( 'afterbegin', "<div class='reactRoot'></div>" );
 
@@ -30,16 +35,41 @@ ReactDOM.render(
     <div class="reactInfo">
         <div class="titleBar">
             <h1>{siteTitle}</h1>
-            <div dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
+            {editBtn ?
+                <div dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
+            : ""}
         </div>
+        <h3><a target="_blank" href={`${url}/login/index.php?nosso=true&username=mus&saml=no`}>{url}</a></h3>
         <div class="infoCards">
             <span class="status">
+                {siteStatus === 'complete' ?
+                    <span class="material-icons" style={{color: "green"}}>check_circle</span> : 
+                    <span class="material-icons" style={{color: "red"}}>error</span>
+                }
                 {siteStatus}
             </span>
             <span class="version">
                 {siteVersion}
             </span>
+            <span class="emailStatus">
+                {emailStatus === 'Enabled' ?
+                    <span class="material-icons" style={{color: "green"}}>check_circle</span> : 
+                    <span class="material-icons" style={{color: "red"}}>error</span>
+                }
+                {emailStatus}
+            </span>
         </div>
+        {domainStatusDropdown ? <div className="section">
+            <div class='sectionHead'>
+                <span class="sectionTitle">Domain Info</span>
+            </div>
+            <div dangerouslySetInnerHTML={{__html: domainStatusDropdown.outerHTML}} />
+            <div dangerouslySetInnerHTML={{__html: accordionDomainRecord.outerHTML}} />
+            <div dangerouslySetInnerHTML={{__html: sslSatusDropdown.outerHTML}} />
+            <div dangerouslySetInnerHTML={{__html: accordionSslValidation.outerHTML}} />
+            <div dangerouslySetInnerHTML={{__html: ELBImportStatusDropdown.outerHTML}} />
+            <div dangerouslySetInnerHTML={{__html: accordionElbImport.outerHTML}} />
+        </div> : "" }
         <div className="adminSection section">
             <div class='sectionHead'>
                 <span class="sectionTitle">Admin</span>
@@ -47,36 +77,43 @@ ReactDOM.render(
                     <div class='sectionAction adminBtnContainer'/>
                 </div>
             </div>
-            <div className='adminInfo'>
-                <div class='section'>
-                    <div class='sectionHead'>
-                        <span class="sectionTitle">Username</span>
+            {adminBtn ?
+                <div className='adminInfo'>
+                    <div class='section'>
+                        <div class='sectionHead'>
+                            <span class="sectionTitle">Username</span>
+                        </div>
+                        {adminUsername}
                     </div>
-                    {adminUsername}
-                </div>
-                <div class='section'>
-                    <div class='sectionHead'>
-                        <span class="sectionTitle">Password</span>
+                    <div class='section'>
+                        <div class='sectionHead'>
+                            <span class="sectionTitle">Password</span>
+                        </div>
+                        <span class="password">{adminPass}</span>
                     </div>
-                    <span class="password">{adminPass}</span>
-                </div>
-                <div class='section'>
-                    <div class='sectionHead'>
-                        <span class="sectionTitle">Email</span>
+                    <div class='section'>
+                        <div class='sectionHead'>
+                            <span class="sectionTitle">Email</span>
+                        </div>
+                        {adminEmail}
                     </div>
-                    {adminEmail}
                 </div>
-            </div>
+            : "" }
             <div class="tempAdminSection" dangerouslySetInnerHTML={{__html: passwordSection.outerHTML}} />
         </div>
         <div className="section">
+            <div class='sectionHead'>
+                <span class="sectionTitle">Info</span>
+            </div>
             <ul dangerouslySetInnerHTML={{__html: mainInfo.innerHTML}} />
         </div>
         <div className="section plugins">
             <div class='sectionHead'>
                 <span class="sectionTitle">Plugins</span>
                 <div class='actions'>
-                    <div class='sectionAction' dangerouslySetInnerHTML={{__html: editBtn.outerHTML}}/>
+                    {editBtn ?
+                        <div class="sectionAction" dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
+                    : ""}                
                 </div>
             </div>
             <ul dangerouslySetInnerHTML={{__html: plugins.innerHTML}} />
@@ -157,6 +194,27 @@ ReactDOM.render(
             }
             .sites-custom-create-admin-user-info > * {
                 width: 100% !important;
+            }
+            .status:before {
+                content: "Status";
+                position: absolute;
+                top: -1.8rem;
+                left: 0;     
+                font-weight: bold;       
+            }
+            .version:before {
+                content: "Version";
+                position: absolute;
+                top: -1.8rem;
+                left: 0;      
+                font-weight: bold;             
+            }
+            .emailStatus:before {
+                content: "Email";
+                position: absolute;
+                top: -1.8rem;
+                left: 0;           
+                font-weight: bold;        
             }
         `}</style>
     </div>,
