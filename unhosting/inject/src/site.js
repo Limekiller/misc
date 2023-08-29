@@ -39,7 +39,7 @@ ReactDOM.render(
                 <div dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
             : ""}
         </div>
-        <h3><a target="_blank" href={`${url}/login/index.php?nosso=true&username=mus&saml=no`}>{url}</a></h3><br />
+        <h3><a target="_blank" href={`${url}/login/index.php?nosso=true&username=mus&saml=no`}>{url}</a></h3>
         <div class="infoCards">
             <span class="status">
                 {siteStatus === 'complete' ?
@@ -58,7 +58,7 @@ ReactDOM.render(
                 }
                 {emailStatus}
             </span>
-        </div>
+        </div><br />
         {domainStatusDropdown ? <div className="section">
             <div class='sectionHead'>
                 <span class="sectionTitle">Domain Info</span>
