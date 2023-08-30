@@ -53,7 +53,6 @@ ReactDOM.render(React.createElement(
             url
         )
     ),
-    React.createElement('br', null),
     React.createElement(
         'div',
         { 'class': 'infoCards' },
@@ -91,6 +90,7 @@ ReactDOM.render(React.createElement(
             emailStatus
         )
     ),
+    React.createElement('br', null),
     domainStatusDropdown ? React.createElement(
         'div',
         { className: 'section' },
@@ -231,3 +231,6 @@ var adminBtnContainer = document.querySelector('.adminBtnContainer');
 if (adminBtn) {
     adminBtnContainer.appendChild(adminBtn);
 }
+document.querySelector('span[data-action="copy-to-clipboard"] button').addEventListener('click', function () {
+    navigator.clipboard.writeText(document.querySelector('.admin-password').value);
+});

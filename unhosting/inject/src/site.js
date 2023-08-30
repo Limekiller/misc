@@ -226,3 +226,6 @@ const adminBtnContainer = document.querySelector('.adminBtnContainer')
 if (adminBtn) {
     adminBtnContainer.appendChild(adminBtn)
 }
+document.querySelector('span[data-action="copy-to-clipboard"] button').addEventListener('click', () => {
+    navigator.clipboard.writeText(document.querySelector('.admin-password').value)
+})

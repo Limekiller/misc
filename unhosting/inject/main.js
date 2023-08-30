@@ -100,45 +100,6 @@ if (document.querySelector('a[href="/spark/kiosk"]')) {
 }
 
 if (window.location.pathname === '/spark/kiosk') {
-    document.querySelector("#kiosk-users-search").addEventListener('keyup', (e) => {
-        if (e.key === "Enter") {
-            let tempVal = e.target.value.replaceAll('*', '')
-            tempVal = "*" + tempVal + "*"
-
-            const tokens = getTokens()
-            fetch('/spark/kiosk/users/search', {
-                method: "POST",
-                headers: {
-                    "Content-Type": 'application/json',
-                    "X-CSRF-TOKEN": tokens.csrf,
-                    "X-XSRF-TOKEN": tokens.xsrf,
-                    "X-Requested-With": "XMLHttpRequest"
-                },
-                body: JSON.stringify({
-                    query: tempVal
-                })
-            }).then(response => response.json())
-            .then(data => {
-                if (document.querySelector('.userResults')) {
-                    document.querySelector('.userResults').remove()
-                }
-                
-                const tableContainer = document.querySelector('#users .card.card-default').parentElement
-                let html = `<div class="userResults">`
-                for (let user of data) {
-                    html += `<div class="user">
-                        <strong>${user.firstname} ${user.lastname}</strong>
-                        <span>${user.email}</span>
-                        <a href='/spark/kiosk/users/impersonate/${user.id}'>Access</a>
-                    </div>`
-                }
-                html += "</div>"
-                tableContainer.insertAdjacentHTML('beforeend', html)
-                window.setTimeout(() => document.querySelector('.userResults').parentElement.childNodes[4].remove(), 50)
-            })
-        }
-    })
-
     document.querySelector('a[href="#users"]').click()
     document.querySelector('aside').style.display = 'none'
 }
@@ -203,6 +164,9 @@ fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject
                         break;
                     case "sites":
                         pageScript = "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/site.js' crossorigin></script>"
+                        break;
+                    case "spark":
+                        pageScript = "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/search.js' crossorigin></script>"
                         break;
                 }      
                 if (pageScript !== "") {
