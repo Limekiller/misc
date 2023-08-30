@@ -32,7 +32,7 @@ var searchContainer = function (_React$Component) {
                     "X-Requested-With": "XMLHttpRequest"
                 },
                 body: JSON.stringify({
-                    query: _this.state.query
+                    query: '*' + _this.state.query + '*'
                 })
             }).then(function (response) {
                 return response.json();

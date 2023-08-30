@@ -26,7 +26,7 @@ class searchContainer extends React.Component {
                 "X-Requested-With": "XMLHttpRequest"
             },
             body: JSON.stringify({
-                query: this.state.query
+                query: `*${this.state.query}*`
             })
         }).then(response => response.json())
         .then(data => {
