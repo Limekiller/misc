@@ -44,6 +44,28 @@
     border: 2px solid #eee;
     background: white;            
 }
+#modal-plugin-results {
+    grid-template-columns: auto;
+}
+#modal-plugin-results li {
+    border-bottom: 1px solid gainsboro;
+    padding: 0.25rem;
+}
+#modal-plugin-results input {
+    width: fit-content;
+    float: left;
+    margin-right: 0.5rem;
+}
+#plugins-list {
+    grid-template-columns: auto;
+    gap: 1rem;
+}
+#plugins-list li {
+    width: fit-content;
+    padding: 0.5rem 1rem;
+    border-radius: 70rem;
+    background: #eee;
+}
 
 /* Legacy Rules */
 
