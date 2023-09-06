@@ -279,9 +279,6 @@ input[type="checkbox"]:checked:after {
     display: grid;
     grid-template-columns: repeat(4, 25%);
 }
-.sites tbody th {
-    grid-column: 1 / 3;
-}
 .stacks tbody th {
     grid-column: 1 / 4;
 }
@@ -289,15 +286,6 @@ input[type="checkbox"]:checked:after {
     font-size: 11px;
     font-weight: bold;
     display: block;
-}
-.status:before {
-    content: 'Status:';
-}
-.app:before {
-    content: 'App:';
-}
-.stack:before {
-    content: 'Stack:';
 }
 .link {
     grid-column: 3 / 5;
@@ -332,18 +320,6 @@ tr.tablesorter-filter-row {
 }
 .rdssize:before {
     content: 'DB size:'
-}
-.siteSearch {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid black;
-  border-radius: 0.5rem;
-  background: grey;
-  pointer-events: none;
-}
-.siteSearch.active {
-    background: none;
-    pointer-events: all;
 }
 .pagination {
     display: none;
