@@ -86,11 +86,11 @@ fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject
                 const path = window.location.pathname.split('/').slice(-2).join('/')
                 switch (true) {
                     // single stack page
-                    case new RegExp('cloud_stacks\/\d*').test(path):
+                    case new RegExp('cloud_stacks\/\\d+').test(path):
                         pageScript = "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/stack.js' crossorigin></script>"
                         break;
                     // single site page
-                    case new RegExp('sites\/\d*').test(path):
+                    case new RegExp('sites\/\\d+').test(path):
                         pageScript = "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/site.js' crossorigin></script>"
                         break;
                     // search page
