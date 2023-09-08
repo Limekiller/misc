@@ -53,24 +53,13 @@ var sitesContainer = function (_React$Component) {
             return page;
         };
 
-        _this.state = {
-            query: "",
-            sites: props.sites ? props.sites : {}
-        };
-        return _this;
-    }
-
-    _createClass(sitesContainer, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            var page = this.getLastPage();
+        _this.getSites = function () {
+            var page = _this.getLastPage();
             for (var i = 1; i <= page; i++) {
                 fetch('/home?page=' + i).then(function (response) {
                     return response.text();
                 }).then(function (data) {
-                    var sites = _this2.state.sites;
+                    var sites = _this.state.sites;
                     var dom = new DOMParser().parseFromString(data, 'text/html');
                     dom.querySelectorAll('tbody tr').forEach(function (row) {
                         var id = row.children[5].children[0].href.split('/').slice(-1)[0];
@@ -82,14 +71,28 @@ var sitesContainer = function (_React$Component) {
                             "stack": row.children[4].innerText.trim()
                         };
                     });
-                    _this2.setState({ sites: sites });
+                    _this.setState({ sites: sites });
                 });
             }
+        };
+
+        _this.state = {
+            query: "",
+            sites: props.sites ? props.sites : {}
+        };
+        return _this;
+    }
+
+    _createClass(sitesContainer, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.getSites();
+            window.setInterval(this.getSites, 10000);
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this2 = this;
 
             return React.createElement(
                 'div',
@@ -100,11 +103,11 @@ var sitesContainer = function (_React$Component) {
                     'Filter sites'
                 ),
                 React.createElement('input', { onKeyUp: function onKeyUp(e) {
-                        return _this3.setState({ query: e.target.value });
+                        return _this2.setState({ query: e.target.value });
                     }, 'class': 'filterSites', type: 'text', name: 'filterSites' }),
                 Object.keys(this.state.sites).map(function (id) {
-                    var site = _this3.state.sites[id];
-                    if (!_this3.state.query || site.name.includes(_this3.state.query) || site.domain.includes(_this3.state.query)) {
+                    var site = _this2.state.sites[id];
+                    if (!_this2.state.query || site.name.includes(_this2.state.query) || site.domain.includes(_this2.state.query)) {
                         return React.createElement(
                             'div',
                             { 'class': 'site', key: id },

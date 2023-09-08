@@ -24,7 +24,7 @@ class sitesContainer extends React.Component {
         return page
     }
 
-    componentDidMount() {
+    getSites = () => {
         const page = this.getLastPage()
         for (let i = 1; i <= page; i++) {
             fetch(`/home?page=${i}`)
@@ -45,6 +45,11 @@ class sitesContainer extends React.Component {
                 this.setState({sites: sites}) 
             })
         }
+    }
+
+    componentDidMount() {
+        this.getSites()
+        window.setInterval(this.getSites, 10000)
     }
 
     render() {
