@@ -114,6 +114,12 @@ class navbar extends React.Component {
                 .reports.expanded .arrow {
                     transform: rotate(180deg);
                 }
+
+                @media screen and (max-width: 1650px) {
+                    .reactNav {
+                        right: 1rem;
+                    }
+                }
             `}</style>
         </nav>
     }
