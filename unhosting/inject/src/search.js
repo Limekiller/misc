@@ -34,6 +34,10 @@ class searchContainer extends React.Component {
         })
     }
 
+    componentDidMount = () => {
+        document.querySelector('#user').select()
+    }
+
     render() {
         return <div class="searchContainer">
                 <label for='user'>Search users</label>

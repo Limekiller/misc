@@ -41,6 +41,10 @@ var searchContainer = function (_React$Component) {
             });
         };
 
+        _this.componentDidMount = function () {
+            document.querySelector('#user').select();
+        };
+
         _this.state = {
             query: "",
             helpActive: false,
