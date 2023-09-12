@@ -417,8 +417,9 @@ main .collapse, main .collapsing {
     text-align: center;
 }
 
-.spark-settings-tabs {
-    display: none;
+.spark-screen.container .row {
+  display: flex;
+  flex-wrap: nowrap;
 }
 .col-md-9 {
     flex: auto;
