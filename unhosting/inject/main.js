@@ -40,7 +40,7 @@ if (document.querySelector('a[href="/spark/kiosk"]')) {
 
 if (window.location.pathname === '/spark/kiosk') {
     document.querySelector('a[href="#users"]').click()
-    document.querySelector('aside').style.display = 'none'
+    document.querySelector('aside').parentElement.style.display = 'none'
 }
 
 if (window.location.pathname == '/cp/cloud_stacks/') {
