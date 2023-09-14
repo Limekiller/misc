@@ -43,30 +43,6 @@ if (window.location.pathname === '/spark/kiosk') {
     document.querySelector('aside').parentElement.style.display = 'none'
 }
 
-if (window.location.pathname == '/cp/cloud_stacks/') {
-    document.querySelector('table').classList.add('stacks')
-    document.querySelectorAll('.stacks tbody tr').forEach(row => {
-        row.children[2].classList.add('status')
-        row.children[3].classList.add('ec2size')
-        row.children[4].classList.add('rdssize')
-
-    })
-}
-
-if (window.location.pathname.includes('/cp/sites/')) {
-    document.querySelectorAll('li').forEach(li => {
-        if (li.innerHTML.includes('Plugins:')) {
-            li.classList.add('plugins')
-            li.parentElement.after(li)
-            li.querySelectorAll('.site-notice-message').forEach(plugin => {
-                let pluginText = plugin.innerText
-                pluginText = "<strong>" + pluginText.split(' ').join('</strong><br />')
-                plugin.innerHTML = pluginText
-            })
-        }
-    })
-}
-
 collapseNav()
 
 // -------- Fetch react scripts --------- //
@@ -101,6 +77,10 @@ fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject
                     case new RegExp('home\/*$').test(path):
                     case new RegExp('sites\/*$').test(path):
                         pageScript = "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/sites.js' crossorigin></script>"
+                        break;
+                    // stack list page
+                    case new RegExp('cloud_stacks\/*$').test(path):
+                        pageScript = "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/stacks.js' crossorigin></script>"
                         break;
                 }      
                 if (pageScript !== "") {

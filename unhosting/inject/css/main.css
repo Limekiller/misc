@@ -267,73 +267,6 @@ input[type="checkbox"]:checked:after {
 	-o-transition: ease .3s;
 }
 
-
-/* SITES / STACKS */
-.sites tr, .stacks tr {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background: #eee;
-    border-radius: 0.5rem;
-    margin: 0.75rem 0;
-}
-.sites th, .sites td, .stacks th, .stacks td {
-    border: none;
-}
-.sites thead tr:not(.tablesorter-filter-row),
-.stacks thead {
-    display: none;
-}
-.sites tbody tr, .stacks tbody tr {
-    display: grid;
-    grid-template-columns: repeat(4, 25%);
-}
-.stacks tbody th {
-    grid-column: 1 / 4;
-}
-.sites tbody td:before, .stacks tbody td:before {
-    font-size: 11px;
-    font-weight: bold;
-    display: block;
-}
-.link {
-    grid-column: 3 / 5;
-    text-align: right;
-}
-a[title="Info / Details"] {
-    display: none;
-}
-.sites tbody td:last-of-type,
-.stacks tbody td:last-of-type {
-    display: flex;
-    justify-content: space-around;
-    font-size: 25px;
-}
-.sites th, .stacks th {
-    font-size: 20px;
-}
-.stack-selector {
-    position: absolute;
-    right: 0;
-    top: -33px;
-    pointer-events: all;
-}
-tr.tablesorter-filter-row {
-    position: relative;
-    background: none;
-    margin-top: -1rem;
-    pointer-events: none;
-}
-.ec2size:before {
-    content: 'Server size:'
-}
-.rdssize:before {
-    content: 'DB size:'
-}
-.pagination {
-    display: none;
-}
-
 /* SITE PAGE */
 .site-info {
     display: grid;
@@ -380,41 +313,6 @@ main .collapse, main .collapsing {
 }
 .plugins strong {
     font-size: 1rem;
-}
-
-/* USERS */
-#kiosk-users-search {
-    padding: 1.25rem 1rem;
-    width: calc(100% + 2.5rem);
-    margin-left: -1.25rem;
-}
-#users table {
-    display: none;
-}
-
-.userResults {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
-}
-.user {
-    padding: 1rem;
-    background: #eee;
-    border-radius: 0.5rem;
-    display: grid;
-    gap: 0.5rem;
-}
-.user span {
-    font-size: 0.75rem;
-    word-wrap: anywhere;
-}
-.user a {
-    padding: 0.5rem 1rem;
-    background: #42a2dc;
-    color: black;
-    border-radius: 0.25rem;
-    margin-top: 1rem;
-    text-align: center;
 }
 
 .spark-screen.container .row {
