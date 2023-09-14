@@ -43,6 +43,20 @@ if (window.location.pathname === '/spark/kiosk') {
     document.querySelector('aside').parentElement.style.display = 'none'
 }
 
+if (window.location.pathname.includes('/cp/sites/')) {
+    document.querySelectorAll('li').forEach(li => {
+        if (li.innerHTML.includes('Plugins:')) {
+            li.classList.add('plugins')
+            li.parentElement.after(li)
+            li.querySelectorAll('.site-notice-message').forEach(plugin => {
+                let pluginText = plugin.innerText
+                pluginText = "<strong>" + pluginText.split(' ').join('</strong><br />')
+                plugin.innerHTML = pluginText
+            })
+        }
+    })
+}
+
 collapseNav()
 
 // -------- Fetch react scripts --------- //
