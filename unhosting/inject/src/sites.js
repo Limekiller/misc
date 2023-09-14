@@ -58,6 +58,14 @@ class sitesContainer extends React.Component {
             <input onKeyUp={(e) => this.setState({query: e.target.value})} class="filterSites" type='text' name="filterSites" />
             {Object.keys(this.state.sites).map(id => {
                 const site = this.state.sites[id]
+
+                let icon = null
+                if (site.app === 'moodle') {
+                    icon = 'https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/images/moodle.png'
+                } else if (site.app === 'workplace') {
+                    icon = 'https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/images/workplace.png'
+                }
+
                 if (!this.state.query || site.name.includes(this.state.query) || site.domain.includes(this.state.query)) {
                     return <div class='site' key={id}>
                         <div style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -73,7 +81,7 @@ class sitesContainer extends React.Component {
                                     }
                                     {site.status}
                                 </span>
-                                <span class="app">{site.app}</span>
+                                <span class="app">{icon ? <img src={icon} /> : ""}{site.app}</span>
                                 <span class="stack">{site.stack}</span>
                             </div>
                             <div class="options">
@@ -129,6 +137,9 @@ class sitesContainer extends React.Component {
                 }
                 .options a:hover span {
                     color: #42a2dc;
+                }
+                .app img {
+                    width: 1.25rem;
                 }
             `}</style>
         </div>

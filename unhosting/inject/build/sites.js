@@ -107,6 +107,14 @@ var sitesContainer = function (_React$Component) {
                     }, 'class': 'filterSites', type: 'text', name: 'filterSites' }),
                 Object.keys(this.state.sites).map(function (id) {
                     var site = _this2.state.sites[id];
+
+                    var icon = null;
+                    if (site.app === 'moodle') {
+                        icon = 'https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/images/moodle.png';
+                    } else if (site.app === 'workplace') {
+                        icon = 'https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/images/workplace.png';
+                    }
+
                     if (!_this2.state.query || site.name.includes(_this2.state.query) || site.domain.includes(_this2.state.query)) {
                         return React.createElement(
                             'div',
@@ -156,6 +164,7 @@ var sitesContainer = function (_React$Component) {
                                     React.createElement(
                                         'span',
                                         { 'class': 'app' },
+                                        icon ? React.createElement('img', { src: icon }) : "",
                                         site.app
                                     ),
                                     React.createElement(
@@ -202,7 +211,7 @@ var sitesContainer = function (_React$Component) {
                 React.createElement(
                     'style',
                     { jsx: true },
-                    '\n                .sitesContainer {\n                    margin-top: 1rem;\n                }\n                .site {\n                    background: #eee;\n                    border-radius: 0.5rem;\n                    padding: 1rem;\n                    margin: 1rem 0;\n                    height: 7.5rem;\n                }\n                .info {\n                    display: flex;\n                }\n                .info span:not(.material-icons) {\n                    display: flex;\n                    align-items: center;\n                    gap: 0.25rem;\n                }\n                .info span:not(:last-child):not(.material-icons):after {\n                    content: "\u2022";\n                    margin: 0 0.5rem;\n                }\n                .link {\n                    display: flex;\n                    gap: 0.25rem;\n                    color: #42a2dc;\n                }\n                .link * {\n                    color: #42a2dc;\n                }\n                .name {\n                    color: #42a2dc;\n                    text-decoration: none;\n                }\n                .options {\n                    display: flex;\n                    gap: 0.5rem;\n                }\n                .options span {\n                    font-size: 2rem;\n                }\n                .options a:hover span {\n                    color: #42a2dc;\n                }\n            '
+                    '\n                .sitesContainer {\n                    margin-top: 1rem;\n                }\n                .site {\n                    background: #eee;\n                    border-radius: 0.5rem;\n                    padding: 1rem;\n                    margin: 1rem 0;\n                    height: 7.5rem;\n                }\n                .info {\n                    display: flex;\n                }\n                .info span:not(.material-icons) {\n                    display: flex;\n                    align-items: center;\n                    gap: 0.25rem;\n                }\n                .info span:not(:last-child):not(.material-icons):after {\n                    content: "\u2022";\n                    margin: 0 0.5rem;\n                }\n                .link {\n                    display: flex;\n                    gap: 0.25rem;\n                    color: #42a2dc;\n                }\n                .link * {\n                    color: #42a2dc;\n                }\n                .name {\n                    color: #42a2dc;\n                    text-decoration: none;\n                }\n                .options {\n                    display: flex;\n                    gap: 0.5rem;\n                }\n                .options span {\n                    font-size: 2rem;\n                }\n                .options a:hover span {\n                    color: #42a2dc;\n                }\n                .app img {\n                    width: 1.25rem;\n                }\n            '
                 )
             );
         }
