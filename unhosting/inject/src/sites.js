@@ -40,6 +40,7 @@ class sitesContainer extends React.Component {
                         "status": row.children[2].innerText.trim(),
                         "app": row.children[3].innerText.trim(),
                         "stack": row.children[4].innerText.trim(),
+                        "production": row.children[0].querySelector('i') ? true : false
                     }
                 })   
                 this.setState({sites: sites}) 
@@ -82,6 +83,13 @@ class sitesContainer extends React.Component {
                                     {site.status}
                                 </span>
                                 <span class="app">{icon ? <img src={icon} /> : ""}{site.app}</span>
+                                <span class="production">
+                                    {site.production ? 
+                                        <span class="material-icons" style={{color: '#f97d0d'}}>factory</span> : 
+                                        <span class="material-icons">science</span>
+                                    }
+                                    {site.production ? 'Production' : 'Staging'}
+                                </span>
                                 <span class="stack">{site.stack}</span>
                             </div>
                             <div class="options">

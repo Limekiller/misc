@@ -68,7 +68,8 @@ var sitesContainer = function (_React$Component) {
                             "domain": row.children[1].innerText.trim(),
                             "status": row.children[2].innerText.trim(),
                             "app": row.children[3].innerText.trim(),
-                            "stack": row.children[4].innerText.trim()
+                            "stack": row.children[4].innerText.trim(),
+                            "production": row.children[0].querySelector('i') ? true : false
                         };
                     });
                     _this.setState({ sites: sites });
@@ -166,6 +167,20 @@ var sitesContainer = function (_React$Component) {
                                         { 'class': 'app' },
                                         icon ? React.createElement('img', { src: icon }) : "",
                                         site.app
+                                    ),
+                                    React.createElement(
+                                        'span',
+                                        { 'class': 'production' },
+                                        site.production ? React.createElement(
+                                            'span',
+                                            { 'class': 'material-icons', style: { color: '#f97d0d' } },
+                                            'factory'
+                                        ) : React.createElement(
+                                            'span',
+                                            { 'class': 'material-icons' },
+                                            'science'
+                                        ),
+                                        site.production ? 'Production' : 'Staging'
                                     ),
                                     React.createElement(
                                         'span',
