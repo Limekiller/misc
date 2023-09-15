@@ -7,6 +7,7 @@ const pluginsBtn = infoParent.childNodes[2].querySelector('a')
 const siteStatus = infoParent.textContent.split('deployment status: ')[1].split("\n")[0].trim()
 const siteVersion = infoParent.textContent.split('checkout:: ')[1].split(" ")[0].trim()
 const emailStatus = infoParent.textContent.split('Email state: ')[1].split("Site admin")[0].trim()
+const productionStatus = infoParent.textContent.split('Production site: ')[1].split(" ")[0].trim()
 
 const domainStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionDomainRecord"]')
 const accordionDomainRecord = infoParent.querySelector('#accordionDomainRecord')
@@ -48,8 +49,12 @@ ReactDOM.render(
                 }
                 {siteStatus}
             </span>
-            <span class="version">
-                {siteVersion}
+            <span class="productionStatus">
+                {productionStatus === '1' ?
+                    <span class="material-icons" style={{color: "green"}}>factory</span> : 
+                    <span class="material-icons">science</span>
+                }
+                {productionStatus === '1' ? "Production" : "Staging"}
             </span>
             <span class="emailStatus">
                 {emailStatus === 'Enabled' ?
@@ -57,6 +62,9 @@ ReactDOM.render(
                     <span class="material-icons" style={{color: "red"}}>error</span>
                 }
                 {emailStatus}
+            </span>
+            <span class="version">
+                {siteVersion}
             </span>
         </div><br />
         {domainStatusDropdown ? <div className="section">
@@ -212,6 +220,13 @@ ReactDOM.render(
             }
             .emailStatus:before {
                 content: "Email";
+                position: absolute;
+                top: -1.8rem;
+                left: 0;           
+                font-weight: bold;        
+            }
+            .productionStatus:before {
+                content: "Deployment";
                 position: absolute;
                 top: -1.8rem;
                 left: 0;           
