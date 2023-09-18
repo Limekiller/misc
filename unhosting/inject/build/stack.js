@@ -1,3 +1,11 @@
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var infoParent = document.querySelector('.col-sm-9');
 
 var stackStatus = infoParent.childNodes[2].querySelector('strong').textContent;
@@ -62,23 +70,25 @@ for (var i = 0; i < stackInfo.childNodes.length; i += 4) {
 }
 
 var storageHeader = document.evaluate("//strong[contains(., 'Storage')]", document, null, XPathResult.ANY_TYPE, null).iterateNext();
-var storage = storageHeader.nextElementSibling;
-
-var stackButtons = [];
-stackButtons.push(document.evaluate("//a[contains(., 'Go to stack deployment')]", document, null, XPathResult.ANY_TYPE, null).iterateNext());
-stackButtons.push(document.evaluate("//button[contains(., 'RDS Stop')]", document, null, XPathResult.ANY_TYPE, null).iterateNext());
-stackButtons.push(document.evaluate("//button[contains(., 'EC2 Stop')]", document, null, XPathResult.ANY_TYPE, null).iterateNext());
-stackButtons.push(document.evaluate("//button[contains(., 'Deploy webconfig')]", document, null, XPathResult.ANY_TYPE, null).iterateNext());
-var stackButtonString = "";
+var storageElem = storageHeader.nextElementSibling;
+var storageLines = storageElem.innerText.split('\n');
+var storage = {};
 var _iteratorNormalCompletion = true;
 var _didIteratorError = false;
 var _iteratorError = undefined;
 
 try {
-    for (var _iterator = stackButtons[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var stackButton = _step.value;
+    for (var _iterator = storageLines[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var line = _step.value;
 
-        stackButtonString += stackButton ? stackButton.outerHTML : "";
+        var obj = {};
+        if (line.includes('/')) {
+            obj['used'] = line.split('/')[0].trim().split(' ')[1];
+            obj['total'] = line.split('/')[1].trim().split(' ')[0];
+        } else {
+            obj['total'] = line.split(' ')[1];
+        }
+        storage[line.split(":")[0]] = obj;
     }
 } catch (err) {
     _didIteratorError = true;
@@ -95,11 +105,107 @@ try {
     }
 }
 
+var stackButtons = [];
+stackButtons.push(document.evaluate("//a[contains(., 'Go to stack deployment')]", document, null, XPathResult.ANY_TYPE, null).iterateNext());
+stackButtons.push(document.evaluate("//button[contains(., 'RDS Stop')]", document, null, XPathResult.ANY_TYPE, null).iterateNext());
+stackButtons.push(document.evaluate("//button[contains(., 'EC2 Stop')]", document, null, XPathResult.ANY_TYPE, null).iterateNext());
+stackButtons.push(document.evaluate("//button[contains(., 'Deploy webconfig')]", document, null, XPathResult.ANY_TYPE, null).iterateNext());
+var stackButtonString = "";
+var _iteratorNormalCompletion2 = true;
+var _didIteratorError2 = false;
+var _iteratorError2 = undefined;
+
+try {
+    for (var _iterator2 = stackButtons[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var stackButton = _step2.value;
+
+        stackButtonString += stackButton ? stackButton.outerHTML : "";
+    }
+} catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+} finally {
+    try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+        }
+    } finally {
+        if (_didIteratorError2) {
+            throw _iteratorError2;
+        }
+    }
+}
+
 var ec2Form = document.querySelector('#plugin-update-form[action="/cp/cloud_stacks/ec2_update"]');
 var rdsForm = document.querySelector('#plugin-update-form[action="/cp/cloud_stacks/rds_update"]');
 var cronForm = document.querySelector('#lazycron-update-form');
 
 infoParent.insertAdjacentHTML('afterbegin', "<div class='reactRoot'></div>");
+
+var storageGraph = function (_React$Component) {
+    _inherits(storageGraph, _React$Component);
+
+    function storageGraph(props) {
+        _classCallCheck(this, storageGraph);
+
+        var _this = _possibleConstructorReturn(this, (storageGraph.__proto__ || Object.getPrototypeOf(storageGraph)).call(this, props));
+
+        _this.getPercentUsed = function () {
+            var percent = 100;
+            if (_this.props.used) {
+                percent = parseFloat(_this.props.used) / parseFloat(_this.props.total) * 100;
+            }
+            return parseInt(percent);
+        };
+
+        return _this;
+    }
+
+    _createClass(storageGraph, [{
+        key: 'render',
+        value: function render() {
+            var percent = this.getPercentUsed();
+            var color = percent > 80 && this.props.used ? 'red' : '#42a2dc';
+
+            return React.createElement(
+                'div',
+                { 'class': 'storageGraph' },
+                React.createElement(
+                    'span',
+                    { 'class': 'title' },
+                    this.props.title
+                ),
+                React.createElement(
+                    'div',
+                    { 'class': 'graph', style: { background: 'conic-gradient(' + color + ' ' + percent + '%, transparent ' + percent + '%)' } },
+                    React.createElement('div', { 'class': 'mask' }),
+                    React.createElement(
+                        'span',
+                        { 'class': 'used' },
+                        this.props.used
+                    ),
+                    this.props.used ? React.createElement(
+                        'span',
+                        { 'class': 'total' },
+                        '/ ',
+                        this.props.total
+                    ) : React.createElement(
+                        'span',
+                        { 'class': 'total', style: { fontSize: '1.25rem', fontWeight: 'bold' } },
+                        this.props.total
+                    )
+                ),
+                React.createElement(
+                    'style',
+                    { jsx: true },
+                    '\n                .storageGraph {\n                    text-align: center;\n                }\n                .title {\n                    font-weight: bold;\n                }\n                .graph {\n                    background-color: #d6d6d6 !important;\n                    margin-top: 0.5rem;\n                    width: 6rem;\n                    height: 6rem;\n                    border-radius: 99rem;\n                    display: flex;\n                    flex-direction: column;\n                    align-items: center;\n                    justify-content: center;\n                    line-height: 1rem;\n                }\n                .used {\n                    font-size: 1.25rem;\n                    font-weight: bold;\n                }\n                .total {\n                    font-size: 0.75rem;\n                }\n                .graph span {\n                    z-index: 1;\n                }\n                .mask {\n                    width: 5rem;\n                    height: 5rem;\n                    background: #eee;\n                    position: absolute;\n                    border-radius: 99rem;\n                }\n            '
+                )
+            );
+        }
+    }]);
+
+    return storageGraph;
+}(React.Component);
 
 ReactDOM.render(React.createElement(
     'div',
@@ -211,7 +317,17 @@ ReactDOM.render(React.createElement(
                 'Storage'
             )
         ),
-        React.createElement('div', { 'class': 'content', dangerouslySetInnerHTML: { __html: storage.innerHTML } })
+        React.createElement(
+            'div',
+            { 'class': 'content graphs' },
+            Object.keys(storage).map(function (key) {
+                return React.createElement(storageGraph, {
+                    title: key,
+                    used: storage[key]['used'],
+                    total: storage[key]['total']
+                });
+            })
+        )
     ),
     React.createElement('div', {
         'class': 'stackButtons',
@@ -229,6 +345,6 @@ ReactDOM.render(React.createElement(
     React.createElement(
         'style',
         { jsx: true },
-        '\n            .mainLists {\n                display: grid;\n                grid-template-columns: auto auto;\n                gap: 1rem;\n            }\n            .content li {\n                list-style: none;\n                line-height: 1.75rem;\n            }\n            .mainInfo {\n                margin-top: 1rem;\n                display: grid;\n                grid-template-columns: auto auto;\n                gap: 0.5rem;\n            }\n            .stackInfoItem {\n                display: flex;\n                flex-direction: column;\n            }\n            .stackButtons {\n                margin-top: 1rem;\n                display: flex;\n                gap: 0.5rem;\n                justify-content: space-between;\n            }\n            .stackButtons .btn {\n                width: 100%;\n            }\n            .col-sm-9 > *:not(.reactRoot) {\n                display: none;\n            }           \n            .status:before {\n                content: "Status";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;     \n                font-weight: bold;       \n            }\n            .state:before {\n                content: "State";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;      \n                font-weight: bold;             \n            }\n            .size:before {\n                content: "Size";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;           \n                font-weight: bold;        \n            }\n        '
+        '\n            .mainLists {\n                display: grid;\n                grid-template-columns: auto auto;\n                gap: 1rem;\n            }\n            .content li {\n                list-style: none;\n                line-height: 1.75rem;\n            }\n            .mainInfo {\n                margin-top: 1rem;\n                display: grid;\n                grid-template-columns: auto auto;\n                gap: 0.5rem;\n            }\n            .stackInfoItem {\n                display: flex;\n                flex-direction: column;\n            }\n            .stackButtons {\n                margin-top: 1rem;\n                display: flex;\n                gap: 0.5rem;\n                justify-content: space-between;\n            }\n            .stackButtons .btn {\n                width: 100%;\n            }\n            .col-sm-9 > *:not(.reactRoot) {\n                display: none;\n            }           \n            .status:before {\n                content: "Status";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;     \n                font-weight: bold;       \n            }\n            .state:before {\n                content: "State";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;      \n                font-weight: bold;             \n            }\n            .size:before {\n                content: "Size";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;           \n                font-weight: bold;        \n            }\n            .graphs {\n                display: flex;\n                gap: 1rem;\n                justify-content: space-around;\n            }\n        '
     )
 ), document.querySelector('.reactRoot'));

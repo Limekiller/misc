@@ -46,7 +46,19 @@ for (let i = 0; i < stackInfo.childNodes.length; i += 4){
 }
 
 const storageHeader = document.evaluate("//strong[contains(., 'Storage')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()
-const storage = storageHeader.nextElementSibling
+const storageElem = storageHeader.nextElementSibling
+const storageLines = storageElem.innerText.split('\n')
+let storage = {}
+for (let line of storageLines) {
+    let obj = {}
+    if (line.includes('/')) {
+        obj['used'] = line.split('/')[0].trim().split(' ')[1]
+        obj['total'] = line.split('/')[1].trim().split(' ')[0]
+    } else {
+        obj['total'] = line.split(' ')[1]
+    }
+    storage[line.split(":")[0]] = obj
+}
 
 let stackButtons = []
 stackButtons.push(document.evaluate("//a[contains(., 'Go to stack deployment')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext())
@@ -63,6 +75,75 @@ const rdsForm = document.querySelector('#plugin-update-form[action="/cp/cloud_st
 const cronForm = document.querySelector('#lazycron-update-form')
 
 infoParent.insertAdjacentHTML( 'afterbegin', "<div class='reactRoot'></div>" );
+
+class storageGraph extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+
+    getPercentUsed = () => {
+        let percent = 100
+        if (this.props.used) {
+            percent = (parseFloat(this.props.used) / parseFloat(this.props.total)) * 100
+        }
+        return parseInt(percent)
+    }
+
+
+    render() {
+        const percent = this.getPercentUsed()
+        const color = percent > 80 && this.props.used ? 'red' : '#42a2dc'
+
+        return <div class="storageGraph">
+            <span class='title'>{this.props.title}</span>
+            <div class='graph' style={{background: `conic-gradient(${color} ${percent}%, transparent ${percent}%)`}}>
+                <div class='mask' />
+                <span class='used'>{this.props.used}</span>
+                {this.props.used ?
+                    <span class='total'>/ {this.props.total}</span>
+                    : <span class='total' style={{fontSize: '1.25rem', fontWeight: 'bold'}}>{this.props.total}</span>
+                }
+            </div>
+            <style jsx>{`
+                .storageGraph {
+                    text-align: center;
+                }
+                .title {
+                    font-weight: bold;
+                }
+                .graph {
+                    background-color: #d6d6d6 !important;
+                    margin-top: 0.5rem;
+                    width: 6rem;
+                    height: 6rem;
+                    border-radius: 99rem;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    line-height: 1rem;
+                }
+                .used {
+                    font-size: 1.25rem;
+                    font-weight: bold;
+                }
+                .total {
+                    font-size: 0.75rem;
+                }
+                .graph span {
+                    z-index: 1;
+                }
+                .mask {
+                    width: 5rem;
+                    height: 5rem;
+                    background: #eee;
+                    position: absolute;
+                    border-radius: 99rem;
+                }
+            `}</style>
+        </div>
+    }
+}
 
 ReactDOM.render(
     <div class="reactInfo">
@@ -114,7 +195,15 @@ ReactDOM.render(
             <div class='sectionHead'>
                 <span class="sectionTitle">Storage</span>
             </div>
-            <div class='content' dangerouslySetInnerHTML={{__html: storage.innerHTML}}/>
+            <div class='content graphs'>
+                {Object.keys(storage).map(key => {
+                    return React.createElement(storageGraph, {
+                        title: key,
+                        used: storage[key]['used'],
+                        total: storage[key]['total']
+                    })
+                })}
+            </div>
         </div>
         <div 
             class="stackButtons" 
@@ -177,6 +266,11 @@ ReactDOM.render(
                 top: -1.8rem;
                 left: 0;           
                 font-weight: bold;        
+            }
+            .graphs {
+                display: flex;
+                gap: 1rem;
+                justify-content: space-around;
             }
         `}</style>
     </div>,
