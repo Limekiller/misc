@@ -15,16 +15,26 @@ if (stackStatus.includes('complete')) {
 }
 
 const stackTitle = infoParent.childNodes[0].textContent.split('Stack:')[1].trim();
-const ip = infoParent.childNodes[16].innerHTML.split('IP:</strong> ')[1].split('<br>')[0]
-const size = infoParent.childNodes[16].innerHTML.split('Size:</strong> ')[1].split('<br>')[0]
-const state = infoParent.childNodes[16].innerHTML.split('State:</strong> ')[1].split('<br>')[0]
+const ip = infoParent.textContent.split('IP: ')[1].split(' ')[0]
+const size = infoParent.textContent.split('Size: ')[1].split(' ')[0]
+const state = infoParent.textContent.split('State: ')[1].split(' ')[0]
 
-const domains = infoParent.childNodes[8]
-const keys = infoParent.childNodes[12]
-const deleteKeyBtn = infoParent.childNodes[14]
-const addKeyBtn = infoParent.childNodes[30]
+const domainHeader = document.evaluate("//strong[contains(., 'Domains')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()
+let domains
+if (domainHeader) {
+    domains = domainHeader.nextElementSibling
+}
 
-const stackInfo = infoParent.childNodes[16]
+const keysHeader = document.evaluate("//strong[contains(., 'Public Keys')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()
+let keys
+if (keysHeader) {
+    keys = keysHeader.nextElementSibling
+}
+
+const deleteKeyBtn = infoParent.querySelector('.btn-danger')
+const addKeyBtn = document.evaluate("//a[contains(., 'Add Public Keys')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()
+
+const stackInfo = infoParent.querySelectorAll('p')[2]
 let stackInfoList = []
 for (let i = 0; i < stackInfo.childNodes.length; i += 4){
     stackInfoList.push(
@@ -35,16 +45,22 @@ for (let i = 0; i < stackInfo.childNodes.length; i += 4){
     )
 }
 
-const storage = infoParent.childNodes[20]
+const storageHeader = document.evaluate("//strong[contains(., 'Storage')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()
+const storage = storageHeader.nextElementSibling
 
 let stackButtons = []
-for (let i = 32; i < 40; i += 2) {
-    stackButtons.push(<div class="stackButton" dangerouslySetInnerHTML={{__html: infoParent.childNodes[i].outerHTML}}/>)
+stackButtons.push(document.evaluate("//a[contains(., 'Go to stack deployment')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext())
+stackButtons.push(document.evaluate("//button[contains(., 'RDS Stop')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext())
+stackButtons.push(document.evaluate("//button[contains(., 'EC2 Stop')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext())
+stackButtons.push(document.evaluate("//button[contains(., 'Deploy webconfig')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext())
+let stackButtonString = ""
+for (let stackButton of stackButtons) {
+    stackButtonString += stackButton ? stackButton.outerHTML : ""
 }
 
-const ec2Form = infoParent.childNodes[40]
-const rdsForm = infoParent.childNodes[44]
-const cronForm = infoParent.childNodes[46]
+const ec2Form = document.querySelector('#plugin-update-form[action="/cp/cloud_stacks/ec2_update"]')
+const rdsForm = document.querySelector('#plugin-update-form[action="/cp/cloud_stacks/rds_update"]')
+const cronForm = document.querySelector('#lazycron-update-form')
 
 infoParent.insertAdjacentHTML( 'afterbegin', "<div class='reactRoot'></div>" );
 
@@ -67,28 +83,32 @@ ReactDOM.render(
             <span class="size">{size}</span>
         </div>
         <div class="mainLists">
-            <div class="domains section">
-                <div class='sectionHead'>
-                    <span class="sectionTitle">Domains</span>
-                </div>                
-                <div class='content' dangerouslySetInnerHTML={{__html: domains.innerHTML}}/>
-            </div>
-            <div class="keys section">
-                <div class='sectionHead'>
-                    <span class="sectionTitle">Keys</span>
-                    <div class='actions'>
-                        <div class='sectionAction' dangerouslySetInnerHTML={{__html: addKeyBtn.outerHTML}}/>
-                        <div class='sectionAction' dangerouslySetInnerHTML={{__html: deleteKeyBtn.outerHTML}}/>
-                    </div>
-                </div>                
-                <div class='content' dangerouslySetInnerHTML={{__html: keys.innerHTML}}/>
-            </div>
+            {domains ?
+                <div class="domains section">
+                    <div class='sectionHead'>
+                        <span class="sectionTitle">Domains</span>
+                    </div>                
+                    <div class='content' dangerouslySetInnerHTML={{__html: domains.innerHTML}}/>
+                </div>
+            : ""}
+            {keys ?
+                <div class="keys section">
+                    <div class='sectionHead'>
+                        <span class="sectionTitle">Keys</span>
+                        <div class='actions'>
+                            <div class='sectionAction' dangerouslySetInnerHTML={{__html: addKeyBtn.outerHTML}}/>
+                            <div class='sectionAction' dangerouslySetInnerHTML={{__html: deleteKeyBtn.outerHTML}}/>
+                        </div>
+                    </div>                
+                    <div class='content' dangerouslySetInnerHTML={{__html: keys.innerHTML}}/>
+                </div>
+            : ""}
         </div>
-        <div class="section mainInfo">
+        <div class="section">
             <div class='sectionHead'>
                 <span class="sectionTitle">Info</span>
             </div>
-            {stackInfoList}
+            <div class='content mainInfo'>{stackInfoList}</div>
         </div>
         <div class="section">
             <div class='sectionHead'>
@@ -96,16 +116,15 @@ ReactDOM.render(
             </div>
             <div class='content' dangerouslySetInnerHTML={{__html: storage.innerHTML}}/>
         </div>
-        <div class="stackButtons">
-            {stackButtons.map(stackButton => {
-                return stackButton
-            })}
-        </div>
+        <div 
+            class="stackButtons" 
+            dangerouslySetInnerHTML={{__html: stackButtonString}}
+        />
         <br />
         <h3>Advanced</h3>
-        <div dangerouslySetInnerHTML={{__html: ec2Form.outerHTML}} />
-        <div dangerouslySetInnerHTML={{__html: rdsForm.outerHTML}} />
-        <div dangerouslySetInnerHTML={{__html: cronForm.outerHTML}} />
+        <div dangerouslySetInnerHTML={{__html: ec2Form ? ec2Form.outerHTML : ""}} />
+        <div dangerouslySetInnerHTML={{__html: rdsForm ? rdsForm.outerHTML : ""}} />
+        <div dangerouslySetInnerHTML={{__html: cronForm ? cronForm.outerHTML : ""}} />
         <style jsx>{`
             .mainLists {
                 display: grid;
@@ -132,12 +151,8 @@ ReactDOM.render(
                 gap: 0.5rem;
                 justify-content: space-between;
             }
-            .stackButton {
+            .stackButtons .btn {
                 width: 100%;
-            }
-            .stackButton .btn {
-                width: 100%;
-                height: 100%;
             }
             .col-sm-9 > *:not(.reactRoot) {
                 display: none;
