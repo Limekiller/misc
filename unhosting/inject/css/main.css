@@ -75,6 +75,9 @@ ul#plugins-list {
     flex-wrap: wrap;
     width: 100%;
 }
+.pagination {
+    display: none;
+}
 
 /* Legacy Rules */
 
