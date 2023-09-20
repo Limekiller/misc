@@ -15,6 +15,8 @@ if (stackStatus.includes('complete')) {
 }
 
 const stackTitle = infoParent.childNodes[0].textContent.split('Stack:')[1].trim();
+const accountId = document.querySelector('em').innerText
+const connectionLink = document.querySelector('a[href="/cp/cloud_connections/"]')
 const ip = infoParent.textContent.split('IP: ')[1].split(' ')[0]
 const size = infoParent.textContent.split('Size: ')[1].split(' ')[0]
 const state = infoParent.textContent.split('State: ')[1].split(' ')[0]
@@ -147,7 +149,10 @@ class storageGraph extends React.Component {
 
 ReactDOM.render(
     <div class="reactInfo">
-        <h1>{stackTitle}</h1>
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <h1>{stackTitle}</h1>
+            <span>#{accountId}</span>
+        </div>
         <h3>{ip}</h3>
         <div class="infoCards">
             <span class="status">

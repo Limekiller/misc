@@ -35,6 +35,8 @@ if (stackStatus.includes('complete')) {
 }
 
 var stackTitle = infoParent.childNodes[0].textContent.split('Stack:')[1].trim();
+var accountId = document.querySelector('em').innerText;
+var connectionLink = document.querySelector('a[href="/cp/cloud_connections/"]');
 var ip = infoParent.textContent.split('IP: ')[1].split(' ')[0];
 var size = infoParent.textContent.split('Size: ')[1].split(' ')[0];
 var state = infoParent.textContent.split('State: ')[1].split(' ')[0];
@@ -211,9 +213,19 @@ ReactDOM.render(React.createElement(
     'div',
     { 'class': 'reactInfo' },
     React.createElement(
-        'h1',
-        null,
-        stackTitle
+        'div',
+        { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+        React.createElement(
+            'h1',
+            null,
+            stackTitle
+        ),
+        React.createElement(
+            'span',
+            null,
+            '#',
+            accountId
+        )
     ),
     React.createElement(
         'h3',
