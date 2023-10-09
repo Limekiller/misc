@@ -11,18 +11,23 @@ const productionStatus = infoParent.textContent.split('Production site: ')[1].sp
 
 const domainStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionDomainRecord"]')
 const domainStatus = infoParent.textContent.split('Domain record status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error'
-const domainTarget = infoParent.querySelector('#accordionDomainRecord').querySelector('strong').innerText
+
+const domainTarget = infoParent.querySelector('#accordionDomainRecord') ? 
+    infoParent.querySelector('#accordionDomainRecord').querySelector('strong').innerText : null
 const accordionDomainRecord = infoParent.querySelector('#accordionDomainRecord')
 const domainForm = infoParent.querySelector('#site_domain_record_run')
 
 const sslStatus = infoParent.textContent.split('SSL certificate status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error'
 const accordionSslValidation = infoParent.querySelector('#accordionSslValidation')
-const sslName = infoParent.querySelector('#accordionSslValidation').querySelectorAll('.breakword')[0].innerText
-const sslValue = infoParent.querySelector('#accordionSslValidation').querySelectorAll('.breakword')[1].innerText
+const sslName = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword')[0].innerText : null
+const sslValue = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword')[1].innerText : null
 
-let sslSatusDropdown = infoParent.querySelector('#accordionSslValidation div')
-sslSatusDropdown.removeChild(sslSatusDropdown.children[0])
-sslSatusDropdown.removeChild(sslSatusDropdown.children[0])
+let sslStatusDropdown = infoParent.querySelector('#accordionSslValidation div')
+if (sslStatusDropdown) {
+    sslStatusDropdown.removeChild(sslStatusDropdown.children[0])
+    sslStatusDropdown.removeChild(sslStatusDropdown.children[0])
+}
+
 
 const ELBImportStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionElbImport"]')
 const elbStatus = infoParent.textContent.split('ELB import status: ')[1].split(' ')[0] == 'Pass' ? 'check_circle' : 'error'
@@ -190,7 +195,7 @@ ReactDOM.render(
                         </tr>
                     </tbody>
                 </table>
-                <div dangerouslySetInnerHTML={{__html: sslSatusDropdown.innerHTML}} />
+                <div dangerouslySetInnerHTML={{__html: sslStatusDropdown.innerHTML}} />
             </div>)}
 
             {React.createElement(dropdown, {id: 'lb', title: `<h5>

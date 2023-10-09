@@ -19,18 +19,21 @@ var productionStatus = infoParent.textContent.split('Production site: ')[1].spli
 
 var domainStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionDomainRecord"]');
 var domainStatus = infoParent.textContent.split('Domain record status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error';
-var domainTarget = infoParent.querySelector('#accordionDomainRecord').querySelector('strong').innerText;
+
+var domainTarget = infoParent.querySelector('#accordionDomainRecord') ? infoParent.querySelector('#accordionDomainRecord').querySelector('strong').innerText : null;
 var accordionDomainRecord = infoParent.querySelector('#accordionDomainRecord');
 var domainForm = infoParent.querySelector('#site_domain_record_run');
 
 var sslStatus = infoParent.textContent.split('SSL certificate status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error';
 var accordionSslValidation = infoParent.querySelector('#accordionSslValidation');
-var sslName = infoParent.querySelector('#accordionSslValidation').querySelectorAll('.breakword')[0].innerText;
-var sslValue = infoParent.querySelector('#accordionSslValidation').querySelectorAll('.breakword')[1].innerText;
+var sslName = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword')[0].innerText : null;
+var sslValue = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword')[1].innerText : null;
 
-var sslSatusDropdown = infoParent.querySelector('#accordionSslValidation div');
-sslSatusDropdown.removeChild(sslSatusDropdown.children[0]);
-sslSatusDropdown.removeChild(sslSatusDropdown.children[0]);
+var sslStatusDropdown = infoParent.querySelector('#accordionSslValidation div');
+if (sslStatusDropdown) {
+    sslStatusDropdown.removeChild(sslStatusDropdown.children[0]);
+    sslStatusDropdown.removeChild(sslStatusDropdown.children[0]);
+}
 
 var ELBImportStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionElbImport"]');
 var elbStatus = infoParent.textContent.split('ELB import status: ')[1].split(' ')[0] == 'Pass' ? 'check_circle' : 'error';
@@ -311,7 +314,7 @@ ReactDOM.render(React.createElement(
                     )
                 )
             ),
-            React.createElement('div', { dangerouslySetInnerHTML: { __html: sslSatusDropdown.innerHTML } })
+            React.createElement('div', { dangerouslySetInnerHTML: { __html: sslStatusDropdown.innerHTML } })
         )),
         React.createElement(dropdown, { id: 'lb', title: '<h5>\n                <span class="material-icons" style="color: ' + (elbStatus == "check_circle" ? 'green' : 'orange') + '">' + elbStatus + '</span>\n                <span class="material-icons">dns</span> \n                Load Balancer Import\n            </h5>' }, React.createElement(
             'div',
