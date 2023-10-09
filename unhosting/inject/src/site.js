@@ -10,11 +10,24 @@ const emailStatus = infoParent.textContent.split('Email state: ')[1].split("Site
 const productionStatus = infoParent.textContent.split('Production site: ')[1].split(" ")[0].trim()
 
 const domainStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionDomainRecord"]')
+const domainStatus = infoParent.textContent.split('Domain record status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error'
+const domainTarget = infoParent.querySelector('#accordionDomainRecord').querySelector('strong').innerText
 const accordionDomainRecord = infoParent.querySelector('#accordionDomainRecord')
-const sslSatusDropdown = infoParent.querySelector('.collapsed[href="#accordionSslValidation"]')
+const domainForm = infoParent.querySelector('#site_domain_record_run')
+
+const sslStatus = infoParent.textContent.split('SSL certificate status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error'
 const accordionSslValidation = infoParent.querySelector('#accordionSslValidation')
+const sslName = infoParent.querySelector('#accordionSslValidation').querySelectorAll('.breakword')[0].innerText
+const sslValue = infoParent.querySelector('#accordionSslValidation').querySelectorAll('.breakword')[1].innerText
+
+let sslSatusDropdown = infoParent.querySelector('#accordionSslValidation div')
+sslSatusDropdown.removeChild(sslSatusDropdown.children[0])
+sslSatusDropdown.removeChild(sslSatusDropdown.children[0])
+
 const ELBImportStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionElbImport"]')
+const elbStatus = infoParent.textContent.split('ELB import status: ')[1].split(' ')[0] == 'Pass' ? 'check_circle' : 'error'
 const accordionElbImport = infoParent.querySelector('#accordionElbImport')
+const elbForm = infoParent.querySelector('#site_elb_import_run')
 
 const mainInfo = document.querySelector('.col-sm-9 > ul') 
 const url = mainInfo.textContent.split('URL: ')[1].split(' ')[0]
@@ -31,6 +44,67 @@ const advSettings = infoParent.querySelector('#accordionAdvancedSettings')
 const jobOutput = infoParent.querySelector('#accordionJobOutput')
 
 infoParent.insertAdjacentHTML( 'afterbegin', "<div class='reactRoot'></div>" );
+
+class dropdown extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {open: true, openHeight: 0}
+    }
+
+    componentDidMount = () => {
+        const openHeight = document.querySelector(`#dropdown-${this.props.id}`).clientHeight
+        this.setState({openHeight: openHeight, open: false})
+    }
+
+    render() {
+        return <div id={`dropdown-${this.props.id}`} class={`reactDropdown ${this.state.open ? 'open' : ""}`}>
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: "row-reverse"}}>
+                <span class="material-icons toggle" onClick={() => this.setState({open: !this.state.open})}>chevron_right</span>
+                <div class='title' style={{display: 'flex', alignItems: 'center'}} dangerouslySetInnerHTML={{__html: this.props.title}}/>
+            </div>
+            <div class='content'>
+                {this.props.children}
+            </div>
+            <style jsx>{`
+                .reactDropdown {
+                    margin-bottom: 1rem;
+                    border-radius: 0.5rem;
+                    padding: 1rem;
+                    border: 1px solid #eee;
+                    transition: background 0.2s ease, height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+                    overflow: hidden;
+                    height: ${this.state.openHeight ? '4rem' : 'auto'};
+                }
+                .reactDropdown * {
+                    word-wrap: anywhere;
+                }
+                .content {
+                    display: none;
+                }
+                #dropdown-${this.props.id}.open {
+                    background: #eee;
+                    height: ${this.state.openHeight ? this.state.openHeight + 'px' : 'auto'};
+                }
+                .open .content {
+                    display: unset;
+                }
+                .open .toggle {
+                    transform: rotate(90deg);
+                }
+                .reactDropdown .toggle {
+                    background: #eee;
+                    padding: 0.25rem;
+                    border-radius: 99rem;
+                    margin-right: 0.5rem;
+                    transition: transform 0.2s ease;
+                }
+                .title * {
+                    margin: 0;
+                }
+            `}</style>
+        </div>
+    }
+}
 
 ReactDOM.render(
     <div class="reactInfo">
@@ -67,16 +141,67 @@ ReactDOM.render(
                 {siteVersion}
             </span>
         </div><br />
-        {domainStatusDropdown ? <div className="section">
-            <div class='sectionHead'>
-                <span class="sectionTitle">Domain Info</span>
-            </div>
-            <div dangerouslySetInnerHTML={{__html: domainStatusDropdown.outerHTML}} />
-            <div dangerouslySetInnerHTML={{__html: accordionDomainRecord.outerHTML}} />
-            <div dangerouslySetInnerHTML={{__html: sslSatusDropdown.outerHTML}} />
-            <div dangerouslySetInnerHTML={{__html: accordionSslValidation.outerHTML}} />
-            <div dangerouslySetInnerHTML={{__html: ELBImportStatusDropdown.outerHTML}} />
-            <div dangerouslySetInnerHTML={{__html: accordionElbImport.outerHTML}} />
+        {domainStatusDropdown ? <div className="domainInfo">
+
+            {React.createElement(dropdown, {id: 'domain', title: `<h5>
+                <span class="material-icons" style="color: ${domainStatus == "check_circle" ? 'green' : 'orange'}">${domainStatus}</span>
+                <span class="material-icons">language</span> 
+                Domain
+            </h5>`}, <div><br />
+                <span>In order to point your domain at our servers, please create a DNS record as follows:</span><br /><br />
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Host</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CNAME</td>
+                            <td>{url.split('/').slice(-1)[0]}.</td>
+                            <td>{domainTarget}.</td>
+                        </tr>
+                    </tbody>
+                </table><br />
+                <div dangerouslySetInnerHTML={{__html: domainForm.outerHTML}} />
+            </div>)}
+
+            {React.createElement(dropdown, {id: 'ssl', title: `<h5>
+                <span class="material-icons" style="color: ${sslStatus == "check_circle" ? 'green' : 'orange'}">${sslStatus}</span>
+                <span class="material-icons">lock</span> 
+                SSL Certificate
+            </h5>`}, <div><br />
+                <span>In order to verify your domain with Amazon to generate an SSL certificate, please create a DNS record as follows:</span><br /><br />
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Host</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CNAME</td>
+                            <td>{sslName}</td>
+                            <td>{sslValue}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div dangerouslySetInnerHTML={{__html: sslSatusDropdown.innerHTML}} />
+            </div>)}
+
+            {React.createElement(dropdown, {id: 'lb', title: `<h5>
+                <span class="material-icons" style="color: ${elbStatus == "check_circle" ? 'green' : 'orange'}">${elbStatus}</span>
+                <span class="material-icons">dns</span> 
+                Load Balancer Import
+            </h5>`}, <div>
+                <br />
+                <span>This check ensures the SSL certificate has been imported into the elastic load balancer.</span><br /><br />
+                <div dangerouslySetInnerHTML={{__html: elbForm.outerHTML}} />
+            </div>)}
         </div> : "" }
         <div className="adminSection section">
             <div class='sectionHead'>
@@ -142,6 +267,9 @@ ReactDOM.render(
                 display: flex;
                 justify-content: space-between;
                 gap: 1rem;
+            }
+            .domainInfo {
+                margin-bottom: 2rem;
             }
             .adminInfo .section {
                 width: 100%;
@@ -231,6 +359,11 @@ ReactDOM.render(
                 top: -1.8rem;
                 left: 0;           
                 font-weight: bold;        
+            }
+            td, th {
+                padding: 0.5rem;
+                border: 1px solid gainsboro;
+
             }
         `}</style>
     </div>,
