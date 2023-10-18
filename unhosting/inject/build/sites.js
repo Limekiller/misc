@@ -62,6 +62,9 @@ var sitesContainer = function (_React$Component) {
                     var sites = _this.state.sites;
                     var dom = new DOMParser().parseFromString(data, 'text/html');
                     dom.querySelectorAll('tbody tr').forEach(function (row) {
+                        if (!row.children[5].children[0]) {
+                            return;
+                        }
                         var id = row.children[5].children[0].href.split('/').slice(-1)[0];
                         sites[id] = {
                             "name": row.children[0].innerText.trim(),
