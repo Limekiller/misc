@@ -6,7 +6,7 @@ if (typeof firstLoad == 'undefined') {
     let isLoading = false;
     let ticketsCleared = false;
 
-    const currVersion = '1.6';
+    const currVersion = '1.7';
     let updateExists = false;
 
     setInterval(() => {
@@ -37,12 +37,14 @@ if (typeof firstLoad == 'undefined') {
             }
 
             // Once we're no longer loading the page, fix all the tickets in the list
-            if (!document.querySelector('.gravity-loader')) {
-                window.setTimeout(hidePluginTickets, 500);
+            if (!document.querySelector('.gravity-loader') && isLoading) {
                 isLoading = false;
                 ticketsCleared = false;
-                updateTicketEmphasis();
-                swapCols();
+                window.setTimeout(() => {
+                    hidePluginTickets()
+                    updateTicketEmphasis();
+                    swapCols();
+                }, 500);
             }
         }
     }, 100);
@@ -70,7 +72,6 @@ if (typeof firstLoad == 'undefined') {
 
     // Swap the "Contact" and "Subject" columns
     const swapCols = () => {
-        console.log('isLoa');
         headerRow = document.querySelector(".lt-body-wrap table > thead > tr");
         headerRow.insertBefore(headerRow.children[3], headerRow.children[1]);
         const rows = document.querySelectorAll(".lt-body-wrap table > tbody > tr");
