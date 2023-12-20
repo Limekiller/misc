@@ -115,9 +115,26 @@ ReactDOM.render(
     <div class="reactInfo">
         <div class="titleBar">
             <h1>{siteTitle}</h1>
-            {editBtn ?
-                <div dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
-            : ""}
+            <div style={{display: 'flex', gap: '0.5rem'}}>
+                {editBtn ?
+                    <div dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
+                : ""}
+                {infoParent.querySelector('a[href="https://capcog-staging.unhosting.site/local/muse"]') ? 
+                    <a 
+                        href="https://capcog-staging.unhosting.site/local/muse" 
+                        target="_blank"
+                        class="btn btn-primary"
+                        style={{
+                            color: '#f98113',
+                            border: '1px solid #f98113',
+                            background: 'white',
+                            height: 'fit-content'
+                        }}
+                    >
+                        Instant Login
+                    </a>
+                : ""}
+            </div>
         </div>
         <h3><a target="_blank" href={`${url}/login/index.php?nosso=true&username=mus&saml=no`}>{url}</a></h3>
         <div class="infoCards">

@@ -121,7 +121,26 @@ ReactDOM.render(React.createElement(
             null,
             siteTitle
         ),
-        editBtn ? React.createElement('div', { dangerouslySetInnerHTML: { __html: editBtn.outerHTML } }) : ""
+        React.createElement(
+            'div',
+            { style: { display: 'flex', gap: '0.5rem' } },
+            editBtn ? React.createElement('div', { dangerouslySetInnerHTML: { __html: editBtn.outerHTML } }) : "",
+            infoParent.querySelector('a[href="https://capcog-staging.unhosting.site/local/muse"]') ? React.createElement(
+                'a',
+                {
+                    href: 'https://capcog-staging.unhosting.site/local/muse',
+                    target: '_blank',
+                    'class': 'btn btn-primary',
+                    style: {
+                        color: '#f98113',
+                        border: '1px solid #f98113',
+                        background: 'white',
+                        height: 'fit-content'
+                    }
+                },
+                'Instant Login'
+            ) : ""
+        )
     ),
     React.createElement(
         'h3',
