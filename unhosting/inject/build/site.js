@@ -125,10 +125,10 @@ ReactDOM.render(React.createElement(
             'div',
             { style: { display: 'flex', gap: '0.5rem' } },
             editBtn ? React.createElement('div', { dangerouslySetInnerHTML: { __html: editBtn.outerHTML } }) : "",
-            infoParent.querySelector('a[href="https://capcog-staging.unhosting.site/local/muse"]') ? React.createElement(
+            infoParent.querySelector('a[href*="/local/muse"]') ? React.createElement(
                 'a',
                 {
-                    href: 'https://capcog-staging.unhosting.site/local/muse',
+                    href: url + '/local/muse',
                     target: '_blank',
                     'class': 'btn btn-primary',
                     style: {

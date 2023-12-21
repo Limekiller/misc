@@ -119,9 +119,9 @@ ReactDOM.render(
                 {editBtn ?
                     <div dangerouslySetInnerHTML={{__html: editBtn.outerHTML}} />
                 : ""}
-                {infoParent.querySelector('a[href="https://capcog-staging.unhosting.site/local/muse"]') ? 
+                {infoParent.querySelector('a[href*="/local/muse"]') ? 
                     <a 
-                        href="https://capcog-staging.unhosting.site/local/muse" 
+                        href={`${url}/local/muse`}
                         target="_blank"
                         class="btn btn-primary"
                         style={{
