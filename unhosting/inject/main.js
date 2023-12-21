@@ -34,7 +34,19 @@ if (window.location.pathname.includes('/cp/sites/')) {
 
 fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/main.html')
     .then(response => response.text())
-    .then(data => {
+    .then(async data => {
+        const currVersion = '1.1'
+        let versionResp = await fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/version.json')
+        versionResp = await versionResp.json()
+        if (versionResp.version != currVersion) {
+            alert(`There is a new version of BUHCP available! Refresh your browser cache and reload the page to get it.\n
+                Release notes for version ${versionResp.version}:\n
+                ${versionResp.changelog.map(change => {
+                    return `- ${change}`
+                })}`.replace(/  +/g, '')
+            )
+        }
+
         let divFragment = document.createRange().createContextualFragment(data);
         document.body.append(divFragment);
 
