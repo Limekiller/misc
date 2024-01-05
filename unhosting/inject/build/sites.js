@@ -62,17 +62,19 @@ var sitesContainer = function (_React$Component) {
                     var sites = _this.state.sites;
                     var dom = new DOMParser().parseFromString(data, 'text/html');
                     dom.querySelectorAll('tbody tr').forEach(function (row) {
-                        if (!row.children[5].children[0]) {
+                        console.log(row);
+                        if (!row.children[6].children[0]) {
                             return;
                         }
-                        var id = row.children[5].children[0].href.split('/').slice(-1)[0];
+                        var id = row.children[6].children[0].href.split('/').slice(-1)[0];
                         sites[id] = {
                             "name": row.children[0].innerText.trim(),
                             "domain": row.children[1].innerText.trim(),
                             "status": row.children[2].innerText.trim(),
                             "app": row.children[3].innerText.trim(),
                             "stack": row.children[4].innerText.trim(),
-                            "production": row.children[0].querySelector('i') ? true : false
+                            "production": row.children[0].querySelector('i') ? true : false,
+                            "slot": row.children[5].innerText.trim()
                         };
                     });
                     _this.setState({ sites: sites });

@@ -33,17 +33,18 @@ class sitesContainer extends React.Component {
                 const sites = this.state.sites
                 const dom = new DOMParser().parseFromString(data, 'text/html')
                 dom.querySelectorAll('tbody tr').forEach(row => {
-                    if (!row.children[5].children[0]) {
+                    if (!row.children[6].children[0]) {
                         return
                     }
-                    const id = row.children[5].children[0].href.split('/').slice(-1)[0]
+                    const id = row.children[6].children[0].href.split('/').slice(-1)[0]
                     sites[id] = { 
                         "name": row.children[0].innerText.trim(),
                         "domain": row.children[1].innerText.trim(),
                         "status": row.children[2].innerText.trim(),
                         "app": row.children[3].innerText.trim(),
                         "stack": row.children[4].innerText.trim(),
-                        "production": row.children[0].querySelector('i') ? true : false
+                        "production": row.children[0].querySelector('i') ? true : false,
+                        "slot": row.children[5].innerText.trim()
                     }
                 })   
                 this.setState({sites: sites}) 

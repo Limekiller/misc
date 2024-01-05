@@ -35,7 +35,7 @@ if (window.location.pathname.includes('/cp/sites/')) {
 fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/main.html')
     .then(response => response.text())
     .then(async data => {
-        const currVersion = '1.1'
+        const currVersion = '1.2'
         let versionResp = await fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/version.json')
         versionResp = await versionResp.json()
         if (versionResp.version != currVersion) {
