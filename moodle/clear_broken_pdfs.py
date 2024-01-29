@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
         # Delete these files using moosh
         for converted_file in results:
-            os.system(f"sudo -u {user} moosh file-delete {sourcefileid}")
+            os.system(f"sudo -u {user} moosh file-delete {converted_file}")
 
     fc_confirm = input('Done! Are you ready to delete the file conversion records? y/n: ')
 
