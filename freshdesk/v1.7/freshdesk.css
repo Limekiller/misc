@@ -1,3 +1,6 @@
+.img-thumbnail, body {
+    background-color: white;
+}
 .list td {
     padding: 0px;
 }
@@ -33,6 +36,9 @@
 .__module-tickets__tickets-list__tickets-table .status-tag-wrap .tag {
     padding: 10px;   
 }
+.fresh-table .list thead .lt-column, .fresh-table .list thead th {
+    background-color: white;
+}
 #nucleus-navbar.fixed {
     flex-direction: row;
     width: 100%;
@@ -50,6 +56,17 @@
 .__app-navbar .navbar-body {
     flex-direction: row;
     width: 100%;
+}
+.ember-basic-dropdown-content.category-menu {
+    background-color: white;
+    box-shadow: none;
+}
+.category-menu__section {
+  margin: 1.5rem;
+  padding: 14px 10px;
+  border-radius: 1rem;
+  box-shadow: none;
+  border: 1px solid #e1e1e1;
 }
 .category-menu {
     left: 0px;
@@ -84,6 +101,9 @@
 .app-main-wrapper {
     margin: 75px 0px 0px -65px;
 }
+.header-primary {
+    border-bottom: none;
+}
 .header-primary__user__item {
     position: absolute;
     top: 0;
@@ -94,6 +114,9 @@
 }
 .header-primary__user__item.dropdown {
     right: 0;
+}
+.header-label {
+    margin-right: 1rem;
 }
 #mainactionbar {
     position: relative;
@@ -156,4 +179,7 @@ th[style="width: 400px"], tr[style="width: 400px"], td[style="width: 400px"]  {
 }
 .__module-search__app-search .page-search__results {
     left: 0px;
+}
+.category-menu__item {
+    position: relative;
 }
