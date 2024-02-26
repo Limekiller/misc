@@ -183,3 +183,11 @@ th[style="width: 400px"], tr[style="width: 400px"], td[style="width: 400px"]  {
 .category-menu__item {
     position: relative;
 }
+.ember-power-select-trigger, .select-dropdown-trigger {
+    max-width: 12rem;
+}
+.ember-power-select-selected-item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
