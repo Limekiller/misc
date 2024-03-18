@@ -45,7 +45,11 @@ class Plugin:
         if self.plugintype not in PLUGIN_DIRS.keys():
             raise Exception("Plugin type " + self.plugintype + " not recognized")
         if os.path.exists(SITE_DIR + '/' + PLUGIN_DIRS[self.plugintype] + '/' + self.pluginname):
-            raise Exception(self.plugin + " already in codebase!")
+            if '--update' in sys.argv:
+                print("Plugin already in codebase, but update flag supplied")
+                shutil.rmtree(SITE_DIR + '/' + PLUGIN_DIRS[self.plugintype] + '/' + self.pluginname)         
+            else:
+                raise Exception(self.plugin + " already in codebase!")
 
     def download(self):
         plugin_url = PLUGINDB.find_most_recent_url_for_version(self.plugin, VERSION)
@@ -137,7 +141,7 @@ if __name__ == "__main__":
         PLUGIN = sys.argv[2]
         VERSION = sys.argv[3]
     except:
-        print("Usage: python load_plugin.py {wwwroot} {plugin_name} {site.version}")
+        print("Usage: python load_plugin.py {wwwroot} {plugin_name} {site.version} (--update)")
         exit()
 
     if SITE_DIR[0] != '/':
