@@ -11,7 +11,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var links = [];
 var reports = [];
 document.querySelectorAll('nav .dropdown-item').forEach(function (item) {
-    if (item.innerText.includes('Report')) {
+    if (item.innerText.includes('Report') || item.innerText.includes('CSV')) {
         reports.push({
             link: item.href,
             text: item.innerText.trim()
@@ -44,7 +44,8 @@ var navbar = function (_React$Component) {
             'modify permissions': 'badge',
             'support portal': 'support',
             'logout': 'logout',
-            'back to my account': 'arrow_back'
+            'back to my account': 'arrow_back',
+            'self-hosted sites': 'cloud_off'
         };
 
         _this.state = {

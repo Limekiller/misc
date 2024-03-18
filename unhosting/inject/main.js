@@ -12,7 +12,6 @@ if (document.querySelector('a[href="/spark/kiosk"]')) {
 }
 
 if (window.location.pathname === '/spark/kiosk') {
-    document.querySelector('a[href="#users"]').click()
     document.querySelector('aside').parentElement.style.display = 'none'
 }
 
@@ -30,15 +29,19 @@ if (window.location.pathname.includes('/cp/sites/')) {
     })
 }
 
+document.querySelectorAll('.nomaxwidth').forEach(elem => {
+    elem.classList.remove('nomaxwidth')
+})
+
 // -------- Fetch react scripts --------- //
 
 fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/main.html')
     .then(response => response.text())
     .then(async data => {
-        const currVersion = '1.2'
+        const currVersion = '1.3'
         let versionResp = await fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/version.json')
         versionResp = await versionResp.json()
-        if (versionResp.version != currVersion) {
+        if (versionResp.version > currVersion) {
             alert(`There is a new version of BUHCP available! Refresh your browser cache and reload the page to get it.\n
                 Release notes for version ${versionResp.version}:\n
                 ${versionResp.changelog.map(change => {

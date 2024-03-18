@@ -35,6 +35,12 @@ class searchContainer extends React.Component {
     }
 
     componentDidMount = () => {
+        const userEmailElem = document.querySelector('a[href*="mailto"]')
+        if (userEmailElem) {
+            document.querySelector('#user').value = userEmailElem.textContent
+            this.setState({query: userEmailElem.textContent}, this.fetchResults)
+        }
+
         document.querySelector('#user').select()
     }
 

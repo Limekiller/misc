@@ -42,6 +42,12 @@ var searchContainer = function (_React$Component) {
         };
 
         _this.componentDidMount = function () {
+            var userEmailElem = document.querySelector('a[href*="mailto"]');
+            if (userEmailElem) {
+                document.querySelector('#user').value = userEmailElem.textContent;
+                _this.setState({ query: userEmailElem.textContent }, _this.fetchResults);
+            }
+
             document.querySelector('#user').select();
         };
 

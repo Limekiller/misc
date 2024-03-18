@@ -62,7 +62,6 @@ var sitesContainer = function (_React$Component) {
                     var sites = _this.state.sites;
                     var dom = new DOMParser().parseFromString(data, 'text/html');
                     dom.querySelectorAll('tbody tr').forEach(function (row) {
-                        console.log(row);
                         if (!row.children[6].children[0]) {
                             return;
                         }

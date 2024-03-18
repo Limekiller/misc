@@ -3,7 +3,7 @@
 let links = []
 let reports = []
 document.querySelectorAll('nav .dropdown-item').forEach(item => {
-    if (item.innerText.includes('Report')) {
+    if (item.innerText.includes('Report') || item.innerText.includes('CSV')) {
         reports.push({
             link: item.href,
             text: item.innerText.trim()
@@ -29,7 +29,8 @@ class navbar extends React.Component {
         'modify permissions': 'badge',
         'support portal': 'support',
         'logout': 'logout',
-        'back to my account': 'arrow_back'
+        'back to my account': 'arrow_back',
+        'self-hosted sites': 'cloud_off'
     }
     
     constructor(props) {
