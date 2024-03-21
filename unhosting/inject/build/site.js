@@ -16,6 +16,8 @@ var siteStatus = infoParent.textContent.split('deployment status: ')[1].split("\
 var siteVersion = infoParent.textContent.split('checkout:: ')[1].split(" ")[0].trim();
 var emailStatus = infoParent.textContent.split('Email state: ')[1].split("Site admin")[0].trim();
 var productionStatus = infoParent.textContent.split('Production site: ')[1].split(" ")[0].trim();
+var stack = infoParent.textContent.split('Cloud stack: ')[1].split(' ')[0].trim();
+var slot = infoParent.textContent.split('Slot: ')[1].split(' ')[0].trim();
 
 var domainStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionDomainRecord"]');
 var domainStatus = infoParent.textContent.split('Domain record status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error';
@@ -26,8 +28,9 @@ var domainForm = infoParent.querySelector('#site_domain_record_run');
 
 var sslStatus = infoParent.textContent.split('SSL certificate status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error';
 var accordionSslValidation = infoParent.querySelector('#accordionSslValidation');
-var sslName = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword')[0].innerText : null;
-var sslValue = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword')[1].innerText : null;
+var breakword = accordionSslValidation.querySelectorAll('.breakword');
+var sslName = accordionSslValidation && breakword.length ? accordionSslValidation.querySelectorAll('.breakword')[0].innerText : null;
+var sslValue = accordionSslValidation && breakword.length ? accordionSslValidation.querySelectorAll('.breakword')[1].innerText : null;
 
 var sslStatusDropdown = infoParent.querySelector('#accordionSslValidation div');
 if (sslStatusDropdown) {
@@ -143,14 +146,34 @@ ReactDOM.render(React.createElement(
         )
     ),
     React.createElement(
-        'h3',
-        null,
+        'div',
+        { 'class': 'titleBar' },
         React.createElement(
-            'a',
-            { target: '_blank', href: url + '/login/index.php?nosso=true&username=mus&saml=no' },
-            url
+            'h3',
+            null,
+            React.createElement(
+                'a',
+                { target: '_blank', href: url + '/login/index.php?nosso=true&username=mus&saml=no' },
+                url
+            )
+        ),
+        React.createElement(
+            'div',
+            { 'class': 'infoChip' },
+            React.createElement(
+                'span',
+                null,
+                stack
+            ),
+            React.createElement('div', { style: { height: '100%', width: '2px', background: 'white' } }),
+            React.createElement(
+                'span',
+                null,
+                (1e3 + slot + '').slice(-3)
+            )
         )
     ),
+    React.createElement('br', null),
     React.createElement(
         'div',
         { 'class': 'infoCards' },
@@ -462,7 +485,7 @@ ReactDOM.render(React.createElement(
     React.createElement(
         'style',
         { jsx: true },
-        '\n            .titleBar {\n                display: flex;\n                justify-content: space-between;\n            }\n            .col-sm-9 > *:not(.reactRoot) {\n                display: none;\n            }       \n            .adminInfo {\n                display: flex;\n                justify-content: space-between;\n                gap: 1rem;\n            }\n            .domainInfo {\n                margin-bottom: 2rem;\n            }\n            .adminInfo .section {\n                width: 100%;\n                margin-top: 2rem;\n                background: white;\n            }\n            .adminInfo .sectionTitle {\n                font-size: 0.75rem;\n            }\n            .password {\n                -webkit-text-security: disc;\n            }\n            .password:hover {\n                -webkit-text-security: unset;\n            }\n            .sectionTitle {\n                pointer-events: none;\n            }\n            .sites-custom-create-admin-user-info::before {\n                content: \'Temp Admin\';\n                position: absolute;\n                margin-top: -1.5rem;\n                font-weight: bold;\n            }\n            .sites-custom-create-admin-user-info {\n                margin-top: 2.5rem;\n                display: flex;\n                gap: 1rem;\n            }\n            .fa.fa-user.fa-fw {\n                display: none;\n            }\n            .sites-custom-create-admin-user-info .text-muted,\n            .sites-custom-create-admin-user-info .admin-expire {\n                display: none;\n            }\n            .admin-password.form-control {\n                height: unset !important;\n                background: white;\n                border: none;\n            }\n            .input-group-btn .btn {\n                border-radius: 0 0.25rem 0.25rem 0;\n                border: none;\n                border-left: 1px solid gainsboro;\n                transition: filter 0.2s ease;\n            }\n            .input-group-btn .btn:hover {\n                filter: brightness(0.9);\n            }\n            .sites-custom-create-admin-user-info strong {\n                background: white;\n                padding: 0.5rem;\n                border-radius: 0.5rem;\n            }\n            .sites-custom-create-admin-user-info span,\n            .sites-custom-create-admin-user-info div {\n                max-width: unset !important;\n            }\n            .sites-custom-create-admin-user-info > * {\n                width: 100% !important;\n            }\n            .status:before {\n                content: "Status";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;     \n                font-weight: bold;       \n            }\n            .version:before {\n                content: "Version";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;      \n                font-weight: bold;             \n            }\n            .emailStatus:before {\n                content: "Email";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;           \n                font-weight: bold;        \n            }\n            .productionStatus:before {\n                content: "Deployment";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;           \n                font-weight: bold;        \n            }\n            td, th {\n                padding: 0.5rem;\n                border: 1px solid gainsboro;\n\n            }\n        '
+        '\n            .titleBar {\n                display: flex;\n                justify-content: space-between;\n            }\n            .col-sm-9 > *:not(.reactRoot) {\n                display: none;\n            }       \n            .infoChip {\n                padding: 0.5rem 1rem;\n                background: #eee;\n                border-radius: 99rem;\n                display: flex;\n                gap: 0.5rem;\n            }\n            .adminInfo {\n                display: flex;\n                justify-content: space-between;\n                gap: 1rem;\n            }\n            .domainInfo {\n                margin-bottom: 2rem;\n            }\n            .adminInfo .section {\n                width: 100%;\n                margin-top: 2rem;\n                background: white;\n            }\n            .adminInfo .sectionTitle {\n                font-size: 0.75rem;\n            }\n            .password {\n                -webkit-text-security: disc;\n            }\n            .password:hover {\n                -webkit-text-security: unset;\n            }\n            .sectionTitle {\n                pointer-events: none;\n            }\n            .sites-custom-create-admin-user-info::before {\n                content: \'Temp Admin\';\n                position: absolute;\n                margin-top: -1.5rem;\n                font-weight: bold;\n            }\n            .sites-custom-create-admin-user-info {\n                margin-top: 2.5rem;\n                display: flex;\n                gap: 1rem;\n            }\n            .fa.fa-user.fa-fw {\n                display: none;\n            }\n            .sites-custom-create-admin-user-info .text-muted,\n            .sites-custom-create-admin-user-info .admin-expire {\n                display: none;\n            }\n            .admin-password.form-control {\n                height: unset !important;\n                background: white;\n                border: none;\n            }\n            .input-group-btn .btn {\n                border-radius: 0 0.25rem 0.25rem 0;\n                border: none;\n                border-left: 1px solid gainsboro;\n                transition: filter 0.2s ease;\n            }\n            .input-group-btn .btn:hover {\n                filter: brightness(0.9);\n            }\n            .sites-custom-create-admin-user-info strong {\n                background: white;\n                padding: 0.5rem;\n                border-radius: 0.5rem;\n            }\n            .sites-custom-create-admin-user-info span,\n            .sites-custom-create-admin-user-info div {\n                max-width: unset !important;\n            }\n            .sites-custom-create-admin-user-info > * {\n                width: 100% !important;\n            }\n            .status:before {\n                content: "Status";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;     \n                font-weight: bold;       \n            }\n            .version:before {\n                content: "Version";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;      \n                font-weight: bold;             \n            }\n            .emailStatus:before {\n                content: "Email";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;           \n                font-weight: bold;        \n            }\n            .productionStatus:before {\n                content: "Deployment";\n                position: absolute;\n                top: -1.8rem;\n                left: 0;           \n                font-weight: bold;        \n            }\n            td, th {\n                padding: 0.5rem;\n                border: 1px solid gainsboro;\n\n            }\n        '
     )
 ), document.querySelector('.reactRoot'));
 

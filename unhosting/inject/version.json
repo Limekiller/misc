@@ -1,9 +1,7 @@
 {
-    "version": "1.3",
+    "version": "1.4",
     "changelog": [
-        "When accessing a specific user kiosk page directly, automatically search for that user",
-        "Fix column width on CSV Download and Self-Hosted Sites pages",
-        "Move CSV Download to Reports dropdown",
-        "Add icon to Self-Hosted Sites link"
+        "Improve compatibility with V2 stacks",
+        "Add stack and slot information to top of site page"
     ]
 }

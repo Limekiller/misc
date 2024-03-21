@@ -38,7 +38,7 @@ document.querySelectorAll('.nomaxwidth').forEach(elem => {
 fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/main.html')
     .then(response => response.text())
     .then(async data => {
-        const currVersion = '1.3'
+        const currVersion = '1.4'
         const time = Date.now()
         let versionResp = await fetch(`https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/version.json?ts=${time}`)
         versionResp = await versionResp.json()

@@ -1,6 +1,6 @@
 const infoParent = document.querySelector('.col-sm-9')
 
-const stackStatus = infoParent.childNodes[2].querySelector('strong').textContent
+const stackStatus = infoParent.querySelector('p a[href*="cloud_stacks/deploy"]').textContent
 let statusText
 let statusIconSpan
 if (stackStatus.includes('complete')) {
@@ -14,12 +14,17 @@ if (stackStatus.includes('complete')) {
     statusIconSpan = <span class="material-icons" style={{color: "yellow"}}>warning</span>
 }
 
-const stackTitle = infoParent.childNodes[0].textContent.split('Stack:')[1].trim();
+const stackTitle = infoParent.querySelector('h3').textContent.split('Stack:')[1].trim();
 const accountId = document.querySelector('em').innerText
 const connectionLink = document.querySelector('a[href="/cp/cloud_connections/"]')
 const ip = infoParent.textContent.split('IP: ')[1].split(' ')[0]
 const size = infoParent.textContent.split('Size: ')[1].split(' ')[0]
 const state = infoParent.textContent.split('State: ')[1].split(' ')[0]
+
+let is_v2 = true
+if (ip) {
+    is_v2 = false
+}
 
 const domainHeader = document.evaluate("//strong[contains(., 'Domains')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()
 let domains
@@ -48,18 +53,20 @@ for (let i = 0; i < stackInfo.childNodes.length; i += 4){
 }
 
 const storageHeader = document.evaluate("//strong[contains(., 'Storage')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()
-const storageElem = storageHeader.nextElementSibling
-const storageLines = storageElem.innerText.split('\n')
-let storage = {}
-for (let line of storageLines) {
-    let obj = {}
-    if (line.includes('/')) {
-        obj['used'] = line.split('/')[0].trim().split(' ')[1]
-        obj['total'] = line.split('/')[1].trim().split(' ')[0]
-    } else {
-        obj['total'] = line.split(' ')[1]
+if (storageHeader) {
+    const storageElem = storageHeader.nextElementSibling
+    const storageLines = storageElem.innerText.split('\n')
+    let storage = {}
+    for (let line of storageLines) {
+        let obj = {}
+        if (line.includes('/')) {
+            obj['used'] = line.split('/')[0].trim().split(' ')[1]
+            obj['total'] = line.split('/')[1].trim().split(' ')[0]
+        } else {
+            obj['total'] = line.split(' ')[1]
+        }
+        storage[line.split(":")[0]] = obj
     }
-    storage[line.split(":")[0]] = obj
 }
 
 let stackButtons = []
@@ -159,13 +166,15 @@ ReactDOM.render(
                 {statusIconSpan}
                 {statusText}
             </span>
-            <span class="state">
-                {state == 'running' ? 
-                    <span class="material-icons" style={{color: "green"}}>check_circle</span> : 
-                    <span class="material-icons" style={{color: "red"}}>error</span>
-                }
-                {state == 'running' ? "Running" : "Stopped"}
-            </span>
+            {!is_v2 ? 
+                <span class="state">
+                    {state == 'running' ? 
+                        <span class="material-icons" style={{color: "green"}}>check_circle</span> : 
+                        <span class="material-icons" style={{color: "red"}}>error</span>
+                    }
+                    {state == 'running' ? "Running" : "Stopped"}
+                </span>
+            : ""}
             <span class="size">{size}</span>
         </div>
         <div class="mainLists">
@@ -196,20 +205,22 @@ ReactDOM.render(
             </div>
             <div class='content mainInfo'>{stackInfoList}</div>
         </div>
-        <div class="section">
-            <div class='sectionHead'>
-                <span class="sectionTitle">Storage</span>
+        {typeof storage !== "undefined" ? 
+            <div class="section">
+                <div class='sectionHead'>
+                    <span class="sectionTitle">Storage</span>
+                </div>
+                <div class='content graphs'>
+                    {Object.keys(storage).map(key => {
+                        return React.createElement(storageGraph, {
+                            title: key,
+                            used: storage[key]['used'],
+                            total: storage[key]['total']
+                        })
+                    })}
+                </div>
             </div>
-            <div class='content graphs'>
-                {Object.keys(storage).map(key => {
-                    return React.createElement(storageGraph, {
-                        title: key,
-                        used: storage[key]['used'],
-                        total: storage[key]['total']
-                    })
-                })}
-            </div>
-        </div>
+        : "" }
         <div 
             class="stackButtons" 
             dangerouslySetInnerHTML={{__html: stackButtonString}}
@@ -219,11 +230,19 @@ ReactDOM.render(
         <div dangerouslySetInnerHTML={{__html: ec2Form ? ec2Form.outerHTML : ""}} />
         <div dangerouslySetInnerHTML={{__html: rdsForm ? rdsForm.outerHTML : ""}} />
         <div dangerouslySetInnerHTML={{__html: cronForm ? cronForm.outerHTML : ""}} />
-        <style jsx>{`
-            .mainLists {
+        {is_v2 ? <style jsx>{`
+            .mainLists div {
                 display: grid;
                 grid-template-columns: auto auto;
+            }
+        `}</style>: ""}
+        <style jsx>{`
+            .mainLists {
+                display: flex;
                 gap: 1rem;
+            }
+            .mainLists > div {
+                width: 100%;
             }
             .content li {
                 list-style: none;

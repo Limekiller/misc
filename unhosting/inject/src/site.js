@@ -8,6 +8,8 @@ const siteStatus = infoParent.textContent.split('deployment status: ')[1].split(
 const siteVersion = infoParent.textContent.split('checkout:: ')[1].split(" ")[0].trim()
 const emailStatus = infoParent.textContent.split('Email state: ')[1].split("Site admin")[0].trim()
 const productionStatus = infoParent.textContent.split('Production site: ')[1].split(" ")[0].trim()
+const stack = infoParent.textContent.split('Cloud stack: ')[1].split(' ')[0].trim()
+const slot = infoParent.textContent.split('Slot: ')[1].split(' ')[0].trim()
 
 const domainStatusDropdown = infoParent.querySelector('.collapsed[href="#accordionDomainRecord"]')
 const domainStatus = infoParent.textContent.split('Domain record status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error'
@@ -19,8 +21,9 @@ const domainForm = infoParent.querySelector('#site_domain_record_run')
 
 const sslStatus = infoParent.textContent.split('SSL certificate status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error'
 const accordionSslValidation = infoParent.querySelector('#accordionSslValidation')
-const sslName = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword')[0].innerText : null
-const sslValue = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword')[1].innerText : null
+const breakword = accordionSslValidation.querySelectorAll('.breakword')
+const sslName = accordionSslValidation && breakword.length ? accordionSslValidation.querySelectorAll('.breakword')[0].innerText : null
+const sslValue = accordionSslValidation && breakword.length ? accordionSslValidation.querySelectorAll('.breakword')[1].innerText : null
 
 let sslStatusDropdown = infoParent.querySelector('#accordionSslValidation div')
 if (sslStatusDropdown) {
@@ -136,7 +139,15 @@ ReactDOM.render(
                 : ""}
             </div>
         </div>
-        <h3><a target="_blank" href={`${url}/login/index.php?nosso=true&username=mus&saml=no`}>{url}</a></h3>
+        <div class='titleBar'>
+            <h3><a target="_blank" href={`${url}/login/index.php?nosso=true&username=mus&saml=no`}>{url}</a></h3>
+            <div class='infoChip'>
+                <span>{stack}</span>
+                <div style={{height: '100%', width: '2px', background: 'white'}}></div>
+                <span>{(1e3 + slot + '').slice(-3)}</span>
+            </div>
+        </div>
+        <br />
         <div class="infoCards">
             <span class="status">
                 {siteStatus === 'complete' ?
@@ -285,6 +296,13 @@ ReactDOM.render(
             .col-sm-9 > *:not(.reactRoot) {
                 display: none;
             }       
+            .infoChip {
+                padding: 0.5rem 1rem;
+                background: #eee;
+                border-radius: 99rem;
+                display: flex;
+                gap: 0.5rem;
+            }
             .adminInfo {
                 display: flex;
                 justify-content: space-between;
