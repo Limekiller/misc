@@ -57,7 +57,11 @@ fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject
     .then(async data => {
         const currVersion = '1.4'
         const time = Date.now()
-        let versionResp = await fetch(`https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/version.json?ts=${time}`)
+        let versionResp = await fetch(`https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/version.json?ts=${time}`, {
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        })
         versionResp = await versionResp.json()
         if (versionResp.version > currVersion) {
             alert(`There is a new version of BUHCP available! Refresh your browser cache and reload the page to get it.\n
