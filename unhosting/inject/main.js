@@ -33,6 +33,23 @@ document.querySelectorAll('.nomaxwidth').forEach(elem => {
     elem.classList.remove('nomaxwidth')
 })
 
+if (
+    window.location.pathname.includes('/cp/custom_plugins/') || 
+    window.location.pathname.includes('/cp/custom_repositories/')
+) {
+    document.querySelectorAll('#accordioncustompluginsitories .card-header').forEach(elem => {
+        elem.classList.add('collapse-toggle')
+        elem.parentElement.style.marginBottom = '0'
+    })
+    document.querySelectorAll('#accordionCustomRepositories .card-header').forEach(elem => {
+        elem.classList.add('collapse-toggle')
+        elem.parentElement.style.marginBottom = '0'
+    })
+    document.querySelectorAll('.collapse').forEach(elem => {
+        elem.classList.add('show')
+    })
+}
+
 // -------- Fetch react scripts --------- //
 
 fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/main.html')
@@ -46,7 +63,7 @@ fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject
             alert(`There is a new version of BUHCP available! Refresh your browser cache and reload the page to get it.\n
                 Release notes for version ${versionResp.version}:\n
                 ${versionResp.changelog.map(change => {
-                    return `- ${change}`
+                    return `- ${change}\n`
                 })}`.replace(/  +/g, '')
             )
         }

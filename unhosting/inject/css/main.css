@@ -327,6 +327,10 @@ main .collapse, main .collapsing {
     max-width: none;
 }
 
+#accordioncustompluginsitories .card-header {
+    padding: 1rem;
+}
+
 @media (prefers-color-scheme: dark) {
     html {
         filter: invert(1) hue-rotate(180deg);

@@ -28,7 +28,7 @@ var domainForm = infoParent.querySelector('#site_domain_record_run');
 
 var sslStatus = infoParent.textContent.split('SSL certificate status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error';
 var accordionSslValidation = infoParent.querySelector('#accordionSslValidation');
-var breakword = accordionSslValidation.querySelectorAll('.breakword');
+var breakword = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword') : null;
 var sslName = accordionSslValidation && breakword.length ? accordionSslValidation.querySelectorAll('.breakword')[0].innerText : null;
 var sslValue = accordionSslValidation && breakword.length ? accordionSslValidation.querySelectorAll('.breakword')[1].innerText : null;
 

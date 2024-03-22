@@ -21,7 +21,7 @@ const domainForm = infoParent.querySelector('#site_domain_record_run')
 
 const sslStatus = infoParent.textContent.split('SSL certificate status: ')[1].split('\n')[0] == 'Pass' ? 'check_circle' : 'error'
 const accordionSslValidation = infoParent.querySelector('#accordionSslValidation')
-const breakword = accordionSslValidation.querySelectorAll('.breakword')
+const breakword = accordionSslValidation ? accordionSslValidation.querySelectorAll('.breakword') : null
 const sslName = accordionSslValidation && breakword.length ? accordionSslValidation.querySelectorAll('.breakword')[0].innerText : null
 const sslValue = accordionSslValidation && breakword.length ? accordionSslValidation.querySelectorAll('.breakword')[1].innerText : null
 

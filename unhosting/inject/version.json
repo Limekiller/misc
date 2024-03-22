@@ -1,7 +1,8 @@
 {
-    "version": "1.4",
+    "version": "1.5",
     "changelog": [
-        "Improve compatibility with V2 stacks",
-        "Add stack and slot information to top of site page"
+        "Add support for custom repositories and plugins",
+        "Fix regression where storage wouldn't appear on stack page",
+        "Fix regression where UI woulddn't apply on some sites"
     ]
 }

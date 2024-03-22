@@ -53,10 +53,10 @@ for (let i = 0; i < stackInfo.childNodes.length; i += 4){
 }
 
 const storageHeader = document.evaluate("//strong[contains(., 'Storage')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()
+let storage = {}
 if (storageHeader) {
     const storageElem = storageHeader.nextElementSibling
     const storageLines = storageElem.innerText.split('\n')
-    let storage = {}
     for (let line of storageLines) {
         let obj = {}
         if (line.includes('/')) {
@@ -205,7 +205,7 @@ ReactDOM.render(
             </div>
             <div class='content mainInfo'>{stackInfoList}</div>
         </div>
-        {typeof storage !== "undefined" ? 
+        {Object.keys(storage).length > 0  ? 
             <div class="section">
                 <div class='sectionHead'>
                     <span class="sectionTitle">Storage</span>

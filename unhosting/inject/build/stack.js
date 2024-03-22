@@ -77,10 +77,10 @@ for (var i = 0; i < stackInfo.childNodes.length; i += 4) {
 }
 
 var storageHeader = document.evaluate("//strong[contains(., 'Storage')]", document, null, XPathResult.ANY_TYPE, null).iterateNext();
+var storage = {};
 if (storageHeader) {
     var storageElem = storageHeader.nextElementSibling;
     var storageLines = storageElem.innerText.split('\n');
-    var _storage = {};
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
@@ -96,7 +96,7 @@ if (storageHeader) {
             } else {
                 obj['total'] = line.split(' ')[1];
             }
-            _storage[line.split(":")[0]] = obj;
+            storage[line.split(":")[0]] = obj;
         }
     } catch (err) {
         _didIteratorError = true;
@@ -324,7 +324,7 @@ ReactDOM.render(React.createElement(
             stackInfoList
         )
     ),
-    typeof storage !== "undefined" ? React.createElement(
+    Object.keys(storage).length > 0 ? React.createElement(
         'div',
         { 'class': 'section' },
         React.createElement(
