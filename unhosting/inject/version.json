@@ -1,5 +1,5 @@
 {
-    "version": "1.5",
+    "version": "1.4",
     "changelog": [
         "Add support for custom repositories and plugins",
         "Fix regression where storage wouldn't appear on stack page",
