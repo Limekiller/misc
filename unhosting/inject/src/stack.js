@@ -186,18 +186,19 @@ ReactDOM.render(
                     <div class='content' dangerouslySetInnerHTML={{__html: domains.innerHTML}}/>
                 </div>
             : ""}
-            {keys ?
-                <div class="keys section">
-                    <div class='sectionHead'>
-                        <span class="sectionTitle">Keys</span>
+            <div class="keys section">
+                <div class='sectionHead'>
+                    <span class="sectionTitle">Keys</span>
+                    {addKeyBtn ? 
                         <div class='actions'>
                             <div class='sectionAction' dangerouslySetInnerHTML={{__html: addKeyBtn.outerHTML}}/>
                             <div class='sectionAction' dangerouslySetInnerHTML={{__html: deleteKeyBtn.outerHTML}}/>
                         </div>
-                    </div>                
-                    <div class='content' dangerouslySetInnerHTML={{__html: keys.innerHTML}}/>
-                </div>
-            : ""}
+                        : ""
+                    }
+                </div>                
+                <div class='content' dangerouslySetInnerHTML={{__html: keys ? keys.innerHTML : "No keys added"}}/>
+            </div>
         </div>
         <div class="section">
             <div class='sectionHead'>

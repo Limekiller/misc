@@ -8,7 +8,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var infoParent = document.querySelector('.col-sm-9');
 
-var siteTitle = infoParent.childNodes[0].textContent.split('Review: ')[1].trim();
+var siteTitle = infoParent.textContent.split('Review: ')[1].split(' ')[0].trim();
 var editBtn = infoParent.childNodes[2].querySelector('a');
 var pluginsBtn = infoParent.childNodes[2].querySelector('a');
 

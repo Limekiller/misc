@@ -1,6 +1,6 @@
 const infoParent = document.querySelector('.col-sm-9')
 
-const siteTitle = infoParent.childNodes[0].textContent.split('Review: ')[1].trim();
+const siteTitle = infoParent.textContent.split('Review: ')[1].split(' ')[0].trim()
 const editBtn = infoParent.childNodes[2].querySelector('a')
 const pluginsBtn = infoParent.childNodes[2].querySelector('a')
 

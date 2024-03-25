@@ -1,8 +1,8 @@
 {
-    "version": "1.4",
+    "version": "1.6",
     "changelog": [
-        "Add support for custom repositories and plugins",
-        "Fix regression where storage wouldn't appear on stack page",
-        "Fix regression where UI woulddn't apply on some sites"
+        "Fix an issue where custom layout does not apply to stack page if public key button is missing",
+        "Fix an issue where custom layout does not apply to site page if a notification is present",
+        "Fix version fetching"
     ]
 }

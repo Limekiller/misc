@@ -55,12 +55,10 @@ if (
 fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/main.html')
     .then(response => response.text())
     .then(async data => {
-        const currVersion = '1.5'
+        const currVersion = '1.6'
         const time = Date.now()
         let versionResp = await fetch(`https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/version.json?ts=${time}`, {
-            headers: {
-                'Cache-Control': 'no-cache'
-            }
+            cache: 'no-store'
         })
         versionResp = await versionResp.json()
         if (versionResp.version > currVersion) {

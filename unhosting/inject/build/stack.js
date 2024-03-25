@@ -285,7 +285,7 @@ ReactDOM.render(React.createElement(
             ),
             React.createElement('div', { 'class': 'content', dangerouslySetInnerHTML: { __html: domains.innerHTML } })
         ) : "",
-        keys ? React.createElement(
+        React.createElement(
             'div',
             { 'class': 'keys section' },
             React.createElement(
@@ -296,15 +296,15 @@ ReactDOM.render(React.createElement(
                     { 'class': 'sectionTitle' },
                     'Keys'
                 ),
-                React.createElement(
+                addKeyBtn ? React.createElement(
                     'div',
                     { 'class': 'actions' },
                     React.createElement('div', { 'class': 'sectionAction', dangerouslySetInnerHTML: { __html: addKeyBtn.outerHTML } }),
                     React.createElement('div', { 'class': 'sectionAction', dangerouslySetInnerHTML: { __html: deleteKeyBtn.outerHTML } })
-                )
+                ) : ""
             ),
-            React.createElement('div', { 'class': 'content', dangerouslySetInnerHTML: { __html: keys.innerHTML } })
-        ) : ""
+            React.createElement('div', { 'class': 'content', dangerouslySetInnerHTML: { __html: keys ? keys.innerHTML : "No keys added" } })
+        )
     ),
     React.createElement(
         'div',
