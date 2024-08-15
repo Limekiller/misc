@@ -41,7 +41,7 @@ class Plugin:
     def __init__(self, plugin):
         self.plugin = plugin
         self.plugintype = plugin.split('_')[0]
-        self.pluginname = plugin.split('_')[1]
+        self.pluginname = plugin.split('_', 1)[1]
 
         if self.plugintype not in PLUGIN_DIRS.keys():
             raise Exception("Plugin type " + self.plugintype + " not recognized")
