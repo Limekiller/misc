@@ -34,6 +34,10 @@ if __name__ == "__main__":
     """)
     results = cursor.fetchall()
 
+    fd_confirm = input(f"About to delete {len(results)} files. Ok? y/n: ")
+    if fd_confirm != 'y':
+        exit()
+
     print('Deleting files')
     os.chdir(wwwroot)
     for failed_file in results:
@@ -41,7 +45,7 @@ if __name__ == "__main__":
 
         # Get all files attached to this conversion
         cursor.execute(f"""
-            SELECT * FROM {dbinfo['prefix']}files f
+            SELECT f.id FROM {dbinfo['prefix']}files f
             JOIN {dbinfo['prefix']}file_conversion fc
             JOIN {dbinfo['prefix']}files f2 ON f2.id = fc.sourcefileid
             JOIN {dbinfo['prefix']}context mc ON mc.id = f2.contextid
@@ -53,7 +57,7 @@ if __name__ == "__main__":
 
         # Delete these files using moosh
         for converted_file in results:
-            os.system(f"sudo -u {user} moosh file-delete {converted_file}")
+            os.system(f"sudo -u {user} moosh file-delete {converted_file[0]}")
 
     fc_confirm = input('Done! Are you ready to delete the file conversion records? y/n: ')
 
