@@ -11,7 +11,10 @@ load_dotenv()
 HA_TOKEN = os.getenv('HA_TOKEN')
 # 143
 PHILLIES_ID = 143
-IN_COMMERCIAL = False
+COMMERCIAL_DATA = {
+    "in_commercial": False,
+    "reason": None
+}
 
 def get_current_game_id(team_id, date):
     # This won't work with double headers
@@ -58,6 +61,21 @@ def get_delay():
     return float(response.json()['state'])
 
 
+def mute_unmute_tv(should_mute):
+    url = "http://192.168.0.123:8123/api/services/media_player/volume_mute"
+
+    payload = json.dumps({
+      "entity_id": "media_player.den_tv",
+      "is_volume_muted": should_mute
+    })
+    headers = {
+      'Authorization': 'Bearer ' + HA_TOKEN,
+      'Content-Type': 'application/json'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+
 while True:
     curr_date = datetime.today().strftime('%Y-%m-%d')
     game_id = get_current_game_id(PHILLIES_ID, curr_date)
@@ -65,21 +83,56 @@ while True:
 
     print(data)
 
+    # Only do any of this if the muter is even active
     muter_state = get_muter_state()
-    if data['state'] in ['Middle', 'End'] or data['current_play'] == 'Pitching Substitution':
-        if muter_state and not IN_COMMERCIAL:
-            delay = get_delay()
-            sleep(delay)
-            print('Now I would mute the TV')
+    if muter_state:
 
-        IN_COMMERCIAL = True
+        if data['state'] in ['Middle', 'End']:
+            # If the state changes to middle or end and we aren't already in commercial, always perform the mute
+            if not COMMERCIAL_DATA['in_commercial']:
+                delay = get_delay()
+                sleep(delay)
 
-    else:
-        if muter_state and IN_COMMERCIAL:
-            delay = get_delay()
-            sleep(delay)
-            print('Now I would unmute the TV')
+                print('Now I would mute the TV')
+                mute_unmute_tv(True)
 
-        IN_COMMERCIAL = False
+                COMMERCIAL_DATA['in_commercial'] = True
+                COMMERCIAL_DATA['reason'] = 'inning'
+
+        elif data['current_play'] == 'Pitching Substitution':
+            # If we aren't in commercial and the play changes to pitching substitution, perform the mute
+            if not COMMERCIAL_DATA['in_commercial']:
+                delay = get_delay()
+                sleep(delay)
+
+                print('Now I would mute the TV')
+                mute_unmute_tv(True)
+
+                COMMERCIAL_DATA['in_commercial'] = True
+                COMMERCIAL_DATA['reason'] = 'substitution'
+
+            # HOWEVER, if we change to pitching substitution and we are ALREADY IN COMMERCIAL BECAUSE OF INNING STATE,
+            # that means that we came back from commercial directly to a pitching change. We want to unmute.
+            elif COMMERCIAL_DATA['reason'] != 'substitution':
+                delay = get_delay()
+                sleep(delay)
+
+                print('Now I would unmute the TV')
+                mute_unmute_tv(False)
+
+                COMMERCIAL_DATA['in_commercial'] = False
+                COMMERCIAL_DATA['reason'] = None
+
+        else:
+            # If none of these states are active and we're already in commercial, unmute
+            if COMMERCIAL_DATA['in_commercial']:
+                delay = get_delay()
+                sleep(delay)
+
+                print('Now I would unmute the TV')
+                mute_unmute_tv(False)
+
+                COMMERCIAL_DATA['in_commercial'] = False
+                COMMERCIAL_DATA['reason'] = None
 
     sleep(5)
