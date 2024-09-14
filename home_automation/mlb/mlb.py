@@ -126,7 +126,7 @@ while True:
             # If none of these states are active and we're already in commercial, unmute
             if COMMERCIAL_DATA['in_commercial']:
                 delay = get_delay()
-                sleep(delay)
+                sleep(max(0, delay - 10))
 
                 print('Now I would unmute the TV')
                 mute_unmute_tv(False)
