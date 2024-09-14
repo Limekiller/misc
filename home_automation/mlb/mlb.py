@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 HA_TOKEN = os.getenv('HA_TOKEN')
+# 143
 PHILLIES_ID = 143
 IN_COMMERCIAL = False
 
@@ -22,9 +23,6 @@ def get_current_game_id(team_id, date):
 
 def get_important_game_data(game_id):
     game_data = statsapi.get('game', {'gamePk':game_id})
-
-    with open("bruh.json", "w") as f:
-        f.write(json.dumps(game_data))
 
     state = game_data['liveData']['linescore']['inningState']
     current_play = None
@@ -67,16 +65,21 @@ while True:
 
     print(data)
 
+    muter_state = get_muter_state()
     if data['state'] in ['Middle', 'End'] or data['current_play'] == 'Pitching Substitution':
-        IN_COMMERCIAL = True
-        muter_state = get_muter_state()
-        delay = get_delay()
-
-        if muter_state:
+        if muter_state and not IN_COMMERCIAL:
+            delay = get_delay()
             sleep(delay)
             print('Now I would mute the TV')
 
+        IN_COMMERCIAL = True
+
     else:
+        if muter_state and IN_COMMERCIAL:
+            delay = get_delay()
+            sleep(delay)
+            print('Now I would unmute the TV')
+
         IN_COMMERCIAL = False
 
     sleep(5)
