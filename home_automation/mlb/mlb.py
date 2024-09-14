@@ -77,15 +77,14 @@ def mute_unmute_tv(should_mute):
 
 
 while True:
-    curr_date = datetime.today().strftime('%Y-%m-%d')
-    game_id = get_current_game_id(PHILLIES_ID, curr_date)
-    data = get_important_game_data(game_id)
-
-    print(data)
-
     # Only do any of this if the muter is even active
     muter_state = get_muter_state()
     if muter_state:
+        curr_date = datetime.today().strftime('%Y-%m-%d')
+        game_id = get_current_game_id(PHILLIES_ID, curr_date)
+        data = get_important_game_data(game_id)
+    
+        print(data)
 
         if data['state'] in ['Middle', 'End']:
             # If the state changes to middle or end and we aren't already in commercial, always perform the mute
