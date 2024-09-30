@@ -6,7 +6,7 @@ if (typeof firstLoad == 'undefined') {
     let isLoading = false;
     let ticketsCleared = false;
 
-    const currVersion = '1.7';
+    const currVersion = '1.8';
     let updateExists = false;
 
     setInterval(() => {
@@ -44,7 +44,7 @@ if (typeof firstLoad == 'undefined') {
                     hidePluginTickets()
                     updateTicketEmphasis();
                     swapCols();
-                }, 500);
+                }, 1000);
             }
         }
     }, 100);
