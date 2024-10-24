@@ -49,6 +49,11 @@ if (typeof firstLoad == 'undefined') {
         }
     }, 100);
 
+    const showTicketView = (target) => {
+        console.log('guppy')
+        document.querySelector('a[data-test-id="nav-tickets"]').click()
+        target.click()
+    }
 
     // Find tickets with the request type column set to "plugin" and hide them from view
     const hidePluginTickets = () => {
@@ -132,14 +137,18 @@ if (typeof firstLoad == 'undefined') {
             document.querySelector('.application-header').appendChild(menu.cloneNode(true));
             menu.remove();
 
-            const newMenu = document.querySelector('.left-nav-mfe');
-            newMenu.classList.add('fixed-menu')
-            newMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    newMenu.querySelectorAll('a').forEach(_link => _link.classList.remove('category-menu--link--active'));
-                    link.classList.add('category-menu--link--active');
+            window.setTimeout(() => {
+                const newMenu = document.querySelector('.left-nav-mfe');
+                newMenu.classList.add('fixed-menu')
+                newMenu.firstElementChild.shadowRoot.querySelectorAll('button').forEach(link => {
+                    console.log(link)
+                    link.addEventListener('click', (e) => {
+                        console.log('guy')
+                        showTicketView(e.target)
+                    });
                 });
-            });
+            }, 500)
+
 
             let styleSheet = document.createElement('style');
             styleSheet.type = 'text/css';
