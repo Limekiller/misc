@@ -26,9 +26,12 @@ def get_current_game_id(team_id, date):
 
 def get_important_game_data(game_id):
     game_data = statsapi.get('game', {'gamePk':game_id})
+    current_play = None
+
+    if 'inningState' not in game_data['liveData']['linescore']:
+        return {'state': 'not_started', 'current_play': current_play}
 
     state = game_data['liveData']['linescore']['inningState']
-    current_play = None
 
     if 'event' in game_data['liveData']['plays']['currentPlay']['result']:
         current_play = game_data['liveData']['plays']['currentPlay']['result']['event']
@@ -65,7 +68,7 @@ def mute_unmute_tv(should_mute):
     url = "http://192.168.0.123:8123/api/services/media_player/volume_mute"
 
     payload = json.dumps({
-      "entity_id": "media_player.den_tv",
+      "entity_id": "media_player.phillies_muters",
       "is_volume_muted": should_mute
     })
     headers = {
@@ -83,7 +86,7 @@ while True:
         curr_date = datetime.today().strftime('%Y-%m-%d')
         game_id = get_current_game_id(PHILLIES_ID, curr_date)
         data = get_important_game_data(game_id)
-    
+
         print(data)
 
         if data['state'] in ['Middle', 'End']:
@@ -92,7 +95,6 @@ while True:
                 delay = get_delay()
                 sleep(delay)
 
-                print('Now I would mute the TV')
                 mute_unmute_tv(True)
 
                 COMMERCIAL_DATA['in_commercial'] = True
@@ -104,7 +106,6 @@ while True:
                 delay = get_delay()
                 sleep(delay)
 
-                print('Now I would mute the TV')
                 mute_unmute_tv(True)
 
                 COMMERCIAL_DATA['in_commercial'] = True
@@ -112,15 +113,15 @@ while True:
 
             # HOWEVER, if we change to pitching substitution and we are ALREADY IN COMMERCIAL BECAUSE OF INNING STATE,
             # that means that we came back from commercial directly to a pitching change. We want to unmute.
-            elif COMMERCIAL_DATA['reason'] != 'substitution':
-                delay = get_delay()
-                sleep(delay)
+            #elif COMMERCIAL_DATA['reason'] != 'substitution':
+            #    delay = get_delay()
+            #    sleep(delay)
 
-                print('Now I would unmute the TV')
-                mute_unmute_tv(False)
+            #    print('Now I would unmute the TV')
+            #    mute_unmute_tv(False)
 
-                COMMERCIAL_DATA['in_commercial'] = False
-                COMMERCIAL_DATA['reason'] = None
+            #    COMMERCIAL_DATA['in_commercial'] = False
+            #    COMMERCIAL_DATA['reason'] = None
 
         else:
             # If none of these states are active and we're already in commercial, unmute
@@ -128,7 +129,6 @@ while True:
                 delay = get_delay()
                 sleep(max(0, delay - 20))
 
-                print('Now I would unmute the TV')
                 mute_unmute_tv(False)
 
                 COMMERCIAL_DATA['in_commercial'] = False
