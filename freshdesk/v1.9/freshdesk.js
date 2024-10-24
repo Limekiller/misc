@@ -6,7 +6,7 @@ if (typeof firstLoad == 'undefined') {
     let isLoading = false;
     let ticketsCleared = false;
 
-    const currVersion = '1.8';
+    const currVersion = '1.9';
     let updateExists = false;
 
     setInterval(() => {
@@ -128,11 +128,12 @@ if (typeof firstLoad == 'undefined') {
         simulateMouseClick(document.querySelector('.burger-menu-trigger'));
 
         window.setTimeout(() => {
-            const menu = document.querySelector('#ember-basic-dropdown-wormhole');
-            menu.parentNode.appendChild(menu.cloneNode(true));
+            const menu = document.querySelector('.left-nav-mfe');
+            document.querySelector('.application-header').appendChild(menu.cloneNode(true));
             menu.remove();
 
-            const newMenu = document.querySelector('.category-menu');
+            const newMenu = document.querySelector('.left-nav-mfe');
+            newMenu.classList.add('fixed-menu')
             newMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', (e) => {
                     newMenu.querySelectorAll('a').forEach(_link => _link.classList.remove('category-menu--link--active'));
@@ -144,11 +145,11 @@ if (typeof firstLoad == 'undefined') {
             styleSheet.type = 'text/css';
             styleSheet.innerText = `
                 .app-main-wrapper {
-                    margin: 75px 0px 0px 289px !important;
+                    margin: 200px 0px 0px 310px !important;
                     position: relative;
                 }
                 .application-header {
-                    padding: 60px 0px 0px 289px !important;
+                    padding: 60px 0px 0px 0px !important;
                 }
             `;
             document.head.appendChild(styleSheet);

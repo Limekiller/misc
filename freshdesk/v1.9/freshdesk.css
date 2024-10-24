@@ -95,11 +95,11 @@
     margin-top: -8px;
 }
 .app-main-wrapper.menu-visible {
-    margin: 75px 0px 0px 289px;
+    margin: 126px 0px 0px 310px;
     position: relative;
 }
 .app-main-wrapper {
-    margin: 75px 0px 0px -65px;
+    margin: 126px 0px 0px -65px;
 }
 .header-primary {
     border-bottom: none;
@@ -194,4 +194,29 @@ th[style="width: 400px"], tr[style="width: 400px"], td[style="width: 400px"]  {
 }
 .form-wrap--ticket-details .hide {
     display: block !important;
+}
+
+.__module-tickets__tickets-list.inbox-view .page-content .left-nav-mfe-wrapper .left-nav-mfe {
+    margin-left: 70px;
+    margin-top: 0px;
+}
+
+.left-nav-mfe.fixed-menu {
+    width: 30rem;
+}
+
+.left-nav-mfe:not(.fixed-menu) {
+    display: none;
+}
+
+.page-content .responsive > div:first-child {
+    display: none;
+}
+
+#ticket-details {
+    margin-top: -8rem;
+}
+
+__module-tickets__ticket-details.ember-view {
+    margin-top: -13rem;
 }
