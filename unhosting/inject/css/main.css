@@ -331,6 +331,22 @@ main .collapse, main .collapsing {
     padding: 1rem;
 }
 
+#codebuilds-index .list-search-container:hover {
+    height: 50vh;
+}
+#codebuilds-index .list-search-container:hover .list-search-items {
+    height: 45vh;
+}
+#codebuilds-index .list-search-container,
+#codebuilds-index .list-search-container .list-search-container {
+    transition: height 0.2s ease;
+}
+
+#codebuilds-index .cb-plugin-list {
+    display: flex;
+    flex-direction: column;
+}
+
 @media (prefers-color-scheme: dark) {
     html {
         filter: invert(1) hue-rotate(180deg);
