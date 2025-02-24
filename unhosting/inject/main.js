@@ -1,7 +1,7 @@
 // Legacy (non-react) JS
 
 const getTokens = () => {
-    const csrfToken = document.querySelector("meta[name='csrf-token']").content 
+    const csrfToken = document.querySelector("meta[name='csrf-token']").content
     const xsrfToken = document.cookie.split('XSRF-TOKEN=')[1].split(';')[0]
     return {csrf: csrfToken, xsrf: xsrfToken}
 }
@@ -34,7 +34,7 @@ document.querySelectorAll('.nomaxwidth').forEach(elem => {
 })
 
 if (
-    window.location.pathname.includes('/cp/custom_plugins/') || 
+    window.location.pathname.includes('/cp/custom_plugins/') ||
     window.location.pathname.includes('/cp/custom_repositories/')
 ) {
     document.querySelectorAll('#accordioncustompluginsitories .card-header').forEach(elem => {
@@ -55,7 +55,7 @@ if (
 fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/main.html')
     .then(response => response.text())
     .then(async data => {
-        const currVersion = '1.6'
+        const currVersion = '1.7'
         const time = Date.now()
         let versionResp = await fetch(`https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject/version.json?ts=${time}`, {
             cache: 'no-store'
@@ -76,7 +76,7 @@ fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject
         document.querySelector('#react').addEventListener('load', () => {
             divFragment = document.createRange().createContextualFragment('<script id="babel" src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>');
             document.body.append(divFragment);
-            
+
             document.querySelector('#babel').addEventListener('load', () => {
                 let pageScript = "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/header.js' crossorigin></script>"
                 const path = window.location.pathname.split('/').slice(-2).join('/')
@@ -93,16 +93,11 @@ fetch('https://raw.githubusercontent.com/Limekiller/misc/master/unhosting/inject
                     case new RegExp('spark\/kiosk').test(path):
                         pageScript += "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/search.js' crossorigin></script>"
                         break;
-                    // site list page
-                    case new RegExp('home\/*$').test(path):
-                    case new RegExp('sites\/*$').test(path):
-                        pageScript += "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/sites.js' crossorigin></script>"
-                        break;
                     // stack list page
                     case new RegExp('cloud_stacks\/*$').test(path):
                         pageScript += "<script src='https://cdn.jsdelivr.net/gh/Limekiller/misc@master/unhosting/inject/build/stacks.js' crossorigin></script>"
                         break;
-                }      
+                }
                 if (pageScript !== "") {
                     divFragment = document.createRange().createContextualFragment(pageScript);
                     document.body.append(divFragment);

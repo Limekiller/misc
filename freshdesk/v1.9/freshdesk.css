@@ -220,3 +220,12 @@ th[style="width: 400px"], tr[style="width: 400px"], td[style="width: 400px"]  {
 __module-tickets__ticket-details.ember-view {
     margin-top: -13rem;
 }
+
+.__module-tickets__tickets-list.inbox-view .page-content section#mainactionbar .top-nav-wrapper {
+  position: relative;
+  background: white;
+  box-shadow: none;
+  margin-top: 1rem;
+  width: calc(100% - 20px);
+  z-index: 9999;
+}

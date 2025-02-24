@@ -347,7 +347,7 @@ main .collapse, main .collapsing {
     flex-direction: column;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     html {
         filter: invert(1) hue-rotate(180deg);
         background: black;
@@ -355,7 +355,7 @@ main .collapse, main .collapsing {
     img {
         filter: invert(1) hue-rotate(180deg);
     }
-}
+} */
 
 @media screen and (max-width: 1600px) {
     .dropdown-menu {
