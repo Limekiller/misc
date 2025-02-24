@@ -1,8 +1,7 @@
 {
-    "version": "1.6",
+    "version": "1.7",
     "changelog": [
-        "Fix an issue where custom layout does not apply to stack page if public key button is missing",
-        "Fix an issue where custom layout does not apply to site page if a notification is present",
-        "Fix version fetching"
+        "Remove site list page from changes, as improvements have been integrated into UHCP",
+        "Improve CSS"
     ]
 }
